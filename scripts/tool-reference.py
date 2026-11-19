@@ -23,7 +23,7 @@ def mdx(text,revision):
     def convert(part):
         if part.startswith('```'):return re.sub(r'^```ya?ml[^\n]*', '```yaml illustration',part)
         if part.startswith('`'):return part
-        part=re.sub(r'\]\(([^)\s]+)\)',lambda m:']('+('https://github.com/supernovae-st/nika-spec/blob/'+revision+'/'+posixpath.normpath(posixpath.join('stdlib',m[1])) if not re.match(r'https?://',m[1]) else m[1])+')',part)
+        part=re.sub(r'\]\(([^)\s]+)\)',lambda m:']('+('https://github.com/nika-open/nika-spec/blob/'+revision+'/'+posixpath.normpath(posixpath.join('stdlib',m[1])) if not re.match(r'https?://',m[1]) else m[1])+')',part)
         return html.escape(part,quote=False).replace('{','&#123;').replace('}','&#125;')
     # A leading `>` is Markdown's blockquote marker: html.escape turns it into
     # `&gt;`, which renders as literal text. Restore it only at a real line
@@ -56,7 +56,7 @@ def render(source):
         name=row['id'].removeprefix('nika:');section=sections[name];path='reference/tools/'+name
         if not re.fullmatch('[a-z_]+',name):raise ValueError('Invalid tool identity')
         contract='\n'.join(lines[section['start']+1:section['end']]).strip()
-        url=f'https://github.com/supernovae-st/nika-spec/blob/{rev}/stdlib/builtins-v0.1.md#L{section["start"]+1}'
+        url=f'https://github.com/nika-open/nika-spec/blob/{rev}/stdlib/builtins-v0.1.md#L{section["start"]+1}'
         text=f'''---
 title: "nika:{name}"
 description: "Usage, declared contract and source links for this Nika builtin."
@@ -93,7 +93,7 @@ This reference preserves the specification at the revision linked below. Source 
 
 ## Contract provenance
 
-[Read the pinned specification]({url}) · [Canonical registry](https://github.com/supernovae-st/nika-spec/blob/{rev}/canon/builtins.yaml).
+[Read the pinned specification]({url}) · [Canonical registry](https://github.com/nika-open/nika-spec/blob/{rev}/canon/builtins.yaml).
 
 Tool identity: `nika:{name}`. Specification revision: `{rev[:12]}`.
 

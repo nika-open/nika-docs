@@ -26,7 +26,7 @@ standard library) and **PyYAML** for its local audit step:
 
 ```sh
 python3 -m pip install pyyaml                 # once · the audit step reads YAML
-git clone https://github.com/supernovae-st/nika-registry && cd nika-registry
+git clone https://github.com/nika-open/nika-registry && cd nika-registry
 python3 scripts/get.py --list                 # what exists
 python3 scripts/get.py meeting-actions        # fetch → verify sha256 → local audit → done
 ```

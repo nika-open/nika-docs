@@ -151,7 +151,7 @@ tasks:
     invoke:
       tool: nika:fetch
       args:
-        url: "https://api.github.com/repos/supernovae-st/nika"
+        url: "https://api.github.com/repos/nika-open/nika"
         mode: raw
   count:
     with:
@@ -185,7 +185,7 @@ tasks:
     invoke:
       tool: nika:fetch
       args:
-        url: "https://api.github.com/repos/supernovae-st/nika"
+        url: "https://api.github.com/repos/nika-open/nika"
         mode: jq
         jq: "{stars: .stargazers_count, forks: .forks_count}"
   save:

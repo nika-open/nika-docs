@@ -9,7 +9,7 @@ One binary, many doors. This page is the single map of **every surface Nika
 ships on** — pick your door, each row links to the exact guide.
 
 <Info>
-The one-liner everywhere: `brew install supernovae-st/tap/nika` — then
+The one-liner everywhere: `brew install nika-open/tap/nika` — then
 `nika init` teaches whatever agent you run.
 </Info>
 
@@ -17,14 +17,14 @@ The one-liner everywhere: `brew install supernovae-st/tap/nika` — then
 
 | Surface | What you get | Where |
 |---|---|---|
-| **Homebrew tap** | `brew install supernovae-st/tap/nika` (macOS + Linux) | [Quickstart](/integrations/quickstart) |
+| **Homebrew tap** | `brew install nika-open/tap/nika` (macOS + Linux) | [Quickstart](/integrations/quickstart) |
 | **Release tarballs** | per-platform binaries + `SHA256SUMS` + SLSA provenance (`multiple.intoto.jsonl`): verify before you trust | [Verify a download](/getting-started/installation#verify-a-download) |
 | **`install.sh`** | one-command install from the site | [Installation guide](/getting-started/installation) |
 | **npm** | `npm install -g @nika-open/nika` (Node.js 22+, macOS or glibc Linux): the `nika` command plus the TypeScript SDK; inside a project, `./node_modules/.bin/nika` | [Installation](/getting-started/installation) |
-| **Container image** | `docker run --rm ghcr.io/supernovae-st/nika:0.124.3 --version` (linux/amd64 · linux/arm64, entrypoint `nika`); mount a project with `docker run --rm -v "$PWD:/work" -w /work ghcr.io/supernovae-st/nika:0.124.3 check flow.nika` | [Installation](/getting-started/installation) |
-| **cargo binstall** | the prebuilt release tarball, no compile (`cargo binstall --git https://github.com/supernovae-st/nika nika-cli`) | [Installation](/getting-started/installation) |
-| **nix flake** | `nix run github:supernovae-st/nika/v0.124.3` builds that release tag, store-cached (the bare `github:supernovae-st/nika` builds `main`, which can be ahead of the release) | [Installation](/getting-started/installation) |
-| **GitHub CLI extension** | `gh extension install supernovae-st/gh-nika` → `gh nika check/run` — pass-through to a PATH `nika`, else a one-time checksum-verified release fetch (Actions runners · Codespaces) | [gh-nika](https://github.com/supernovae-st/gh-nika) |
+| **Container image** | `docker run --rm ghcr.io/nika-open/nika:0.124.3 --version` (linux/amd64 · linux/arm64, entrypoint `nika`); mount a project with `docker run --rm -v "$PWD:/work" -w /work ghcr.io/nika-open/nika:0.124.3 check flow.nika` | [Installation](/getting-started/installation) |
+| **cargo binstall** | the prebuilt release tarball, no compile (`cargo binstall --git https://github.com/nika-open/nika nika-cli`) | [Installation](/getting-started/installation) |
+| **nix flake** | `nix run github:nika-open/nika/v0.124.3` builds that release tag, store-cached (the bare `github:nika-open/nika` builds `main`, which can be ahead of the release) | [Installation](/getting-started/installation) |
+| **GitHub CLI extension** | `gh extension install nika-open/gh-nika` → `gh nika check/run` — pass-through to a PATH `nika`, else a one-time checksum-verified release fetch (Actions runners · Codespaces) | [gh-nika](https://github.com/supernovae-st/gh-nika) |
 | **MCP oracle Dockerfile (kit)** | the read-only oracle in a container you build (`integrations/mcp/Dockerfile` in the kit) | [nika-plugins kit](https://github.com/supernovae-st/nika-plugins) |
 
 ## Keeping the suite fresh
@@ -72,7 +72,7 @@ train, and prints the exact per-client fix. Drift is advisory
 | **Claude Desktop** | `nika wire claude-desktop` writes the `claude_desktop_config.json` stanza | [Claude Desktop guide](/integrations/clients/claude-desktop) |
 | **Codex** | first-party plugin (`.codex-plugin` · same commands) + `nika wire codex` | [Codex guide](/integrations/clients/codex) |
 | **Grok Build** | reads the Claude Code kit natively · one marketplace add installs the full plugin (skills · subagents · commands · hooks · oracle) | [Grok Build guide](/integrations/clients/grok-build) |
-| **OpenClaude** | its loader reads the Claude Code marketplace layout · `openclaude plugin marketplace add supernovae-st/nika-plugins && openclaude plugin install nika@nika` installs the whole bundle unported | [kit dossier](https://github.com/supernovae-st/nika-plugins/tree/main/integrations/openclaude) |
+| **OpenClaude** | its loader reads the Claude Code marketplace layout · `openclaude plugin marketplace add nika-open/nika-plugins && openclaude plugin install nika@nika` installs the whole bundle unported | [kit dossier](https://github.com/supernovae-st/nika-plugins/tree/main/integrations/openclaude) |
 | **Hermes** | skill pack (`skills/autonomous-ai-agents/nika` · guard-scanned SAFE) | [Hermes guide](/integrations/hermes) |
 | **OpenCode** | `opencode.json` MCP stanza + native `.agents/` reading — `nika init` suffices | [OpenCode guide](/integrations/opencode) |
 | **goose** | MCP extension stanza + native `AGENTS.md` reading | [goose guide](/integrations/clients/goose) |
@@ -91,7 +91,7 @@ train, and prints the exact per-client fix. Drift is advisory
 
 | Element | What it is | Lives at |
 |---|---|---|
-| **SKILL.md pack** | the authoring skill (check-before-run law · cost honesty) — installable via `npx skills add supernovae-st/nika-plugins` | [nika-plugins kit](https://github.com/supernovae-st/nika-plugins) |
+| **SKILL.md pack** | the authoring skill (check-before-run law · cost honesty) — installable via `npx skills add nika-open/nika-plugins` | [nika-plugins kit](https://github.com/supernovae-st/nika-plugins) |
 | **Plugin commands** | the six `/nika:*` commands (check · compile · explain · trace · permits · doctor) mirrored from the engine | kit `.agents/plugins/nika/` |
 | **`nika-author` subagent** | routes an intent to a template, fills the `# SLOT:` markers, loops `nika check` until rc=0 — read-only | kit `.agents/plugins/nika/agents/` |
 | **Integration kit contract** | « You want to support Nika? Copy this folder » — pinned mirrors, drift-gated in CI | [kit README](https://github.com/supernovae-st/nika-plugins#readme) |

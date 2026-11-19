@@ -122,7 +122,7 @@ Node 25) and Python 3 for the checks.
 1. **Get the source and switch to Node 22.**
 
    ```bash
-   git clone https://github.com/supernovae-st/nika-docs && cd nika-docs
+   git clone https://github.com/nika-open/nika-docs && cd nika-docs
    nvm use    # or put Homebrew's Node 22 first: export PATH="/opt/homebrew/opt/node@22/bin:$PATH"
    ```
 
@@ -382,7 +382,7 @@ response times.
 | 🚀 | [nika-actions-starter](https://github.com/supernovae-st/nika-actions-starter) | A ready template: workflows, editor setup and CI from the first push |
 | 📦 | [nika-registry](https://github.com/supernovae-st/nika-registry) | Shareable workflows, pinned and re-verified |
 | 🤖 | [nika-plugins](https://github.com/supernovae-st/nika-plugins) | Teaches your coding agent (Claude Code, Codex, Cursor…) to write Nika |
-| 🍺 | [homebrew-tap](https://github.com/supernovae-st/homebrew-tap) | `brew install supernovae-st/tap/nika` |
+| 🍺 | [homebrew-tap](https://github.com/supernovae-st/homebrew-tap) | `brew install nika-open/tap/nika` |
 | 🐙 | [gh-nika](https://github.com/supernovae-st/gh-nika) | The Nika CLI as a GitHub CLI extension |
 | 🏛️ | [nika-estate](https://github.com/supernovae-st/nika-estate) | Where each file in Nika's core repositories comes from, declared and re-checkable |
 <!-- /city:map -->

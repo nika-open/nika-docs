@@ -395,5 +395,6 @@ The documentation is licensed `AGPL-3.0-or-later`, like the engine
 
 <p align="center">
   <sub>Start from a template: <a href="https://github.com/nika-open/nika-actions-starter">nika-actions-starter</a> (workflow + editor wiring + CI receipts)<br>
-  Docs: <a href="https://docs.nika.sh">docs.nika.sh</a> · Engine (AGPL-3.0): <a href="https://github.com/nika-open/nika">nika</a> · 🦋 SuperNovae Studio · Paris</sub>
+  Docs: <a href="https://docs.nika.sh">docs.nika.sh</a> · Engine (AGPL-3.0): <a href="https://github.com/nika-open/nika">nika</a><br>
+  🦋 Nika is created and maintained by Thibaut Mélen (<a href="https://github.com/ThibautMelen">@ThibautMelen</a>) · <a href="https://supernovae.studio">SuperNovae Studio</a></sub>
 </p>

@@ -19,7 +19,7 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
-REPO = "supernovae-st/nika"
+REPO = "nika-open/nika"
 DATA = Path("snippets/data/releases.json")
 PAGE = Path("changelog/releases.mdx")
 TAG = re.compile(r"v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)")
@@ -149,7 +149,7 @@ def render(data):
            '| TypeScript SDK | {SDK.package}@{SDK.sourceVersion} | [SDK quickstart](/sdk/start/quickstart) |', '',
            'The SDK bundles its own engine. A new CLI release does not update an installed npm package.', '',
            '<Info>',
-           'This index comes from the complete [published GitHub release list](https://github.com/supernovae-st/nika/releases),',
+           f'This index comes from the complete [published GitHub release list](https://github.com/{REPO}/releases),',
            'ordered by semantic version. Drafts and prereleases are excluded. Dates are UTC publication dates;',
            'an asset count describes attachments, not a guarantee that every platform or distribution channel is available.',
            '</Info>', '',
@@ -180,8 +180,8 @@ def render(data):
             'runs the documentation gates and merges only when those checks and branch protection allow it.',
             'Failed validation leaves the change unmerged and the workflow red; a failed fetch never clears the existing index.',
             'Publication follows the documentation deployment. See the',
-            '[sync runs](https://github.com/supernovae-st/nika-docs/actions/workflows/release-heal.yml)',
-            'and [source catalog](https://github.com/supernovae-st/nika-docs/blob/main/snippets/data/releases.json).', '']
+            '[sync runs](https://github.com/nika-open/nika-docs/actions/workflows/release-heal.yml)',
+            'and [source catalog](https://github.com/nika-open/nika-docs/blob/main/snippets/data/releases.json).', '']
     return '\n'.join(out)
 
 

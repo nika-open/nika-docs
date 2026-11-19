@@ -62,6 +62,17 @@ def signer(tag: str) -> str:
     return LEGACY_SIGNER if version <= LAST_LEGACY_RELEASE else REPO
 
 
+def attestation_lookup(tag: str) -> list[str]:
+    """Where gh finds this tag's attestations.
+
+    Since the move, GitHub serves the attestations of releases built as
+    LEGACY_SIGNER only through that signer's organization: the repository
+    lookup answers 404 under either name.
+    """
+    repo = signer(tag)
+    return ["--owner", repo.split("/")[0]] if repo == LEGACY_SIGNER else ["--repo", repo]
+
+
 def release_metadata(requested: str | None, target: str) -> tuple[str, dict]:
     args = ["gh", "release", "view"]
     if requested is not None:
@@ -137,7 +148,7 @@ def verify(archive: Path, sums: Path, tag: str, commit: str) -> None:
     if digest != matches[0]:
         raise ValueError("published SHA256SUMS checksum mismatch")
     repo = signer(tag)
-    command(["gh", "attestation", "verify", str(archive), "--repo", repo,
+    command(["gh", "attestation", "verify", str(archive), *attestation_lookup(tag),
              "--cert-identity", f"https://github.com/{repo}/{WORKFLOW_PATH}@refs/tags/{tag}",
              "--source-ref", f"refs/tags/{tag}", "--source-digest", commit,
              "--predicate-type", "https://slsa.dev/provenance/v1",

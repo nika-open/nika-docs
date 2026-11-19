@@ -139,7 +139,7 @@ jobs:
       # advisory: continue-on-error keeps a floating judge from blocking the
       # gate (the clock-sweep caught the comment/behavior mismatch 2026-07-20).
       - name: fetch the spec (design parity only)
-        run: git clone --depth 1 https://github.com/supernovae-st/nika-spec ../spec
+        run: git clone --depth 1 https://github.com/nika-open/nika-spec ../spec
       - name: projector deps (pyyaml · jsonschema)
         run: pip install pyyaml jsonschema
       - name: docs.json theme parity vs the design-tokens SSOT (advisory)
@@ -175,7 +175,7 @@ jobs:
           echo "sha=$pin" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          repository: supernovae-st/nika
+          repository: nika-open/nika
           ref: ${{ steps.pin.outputs.sha }}
           path: .engine-qual
       - name: Verify the checkout is the pinned commit
@@ -235,7 +235,7 @@ jobs:
       - name: scripts/estate.py is byte-identical to nika-estate at the pinned rev
         run: |
           pin="$(grep -v '^#' ESTATE_PIN | head -1 | tr -d '[:space:]')"
-          url="https://raw.githubusercontent.com/supernovae-st/nika-estate/${pin}/scripts/estate.py"
+          url="https://raw.githubusercontent.com/nika-open/nika-estate/${pin}/scripts/estate.py"
           curl -fsSL "$url" -o /tmp/estate-canonical.py
           if ! cmp -s /tmp/estate-canonical.py scripts/estate.py; then
             echo "::error file=scripts/estate.py::diverges from nika-estate@${pin} — the tool is shared: change it upstream, bump ESTATE_PIN, re-mirror"
@@ -283,7 +283,7 @@ jobs:
           PY
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          repository: supernovae-st/nika-spec
+          repository: nika-open/nika-spec
           ref: ${{ steps.spec.outputs.revision }}
           path: .knowledge-spec
       - name: All declarations and excerpts come from the pinned source

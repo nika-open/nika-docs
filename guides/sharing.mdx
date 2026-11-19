@@ -6,7 +6,7 @@ icon: "share-nodes"
 ---
 
 Nika workflows are one portable `.nika` file, so sharing one is just
-sharing text. [**nika-registry**](https://github.com/supernovae-st/nika-registry)
+sharing text. [**nika-registry**](https://github.com/nika-open/nika-registry)
 adds a trust layer: every entry is re-proven by CI — pinned to a full
 commit + sha256, re-run through the conformance oracle, and certified by
 the engine's static analysis. You see what a workflow *can do* — exec,
@@ -56,12 +56,12 @@ other workflow.
 
 ## Machine surfaces (for agents)
 
-- [`index.json`](https://raw.githubusercontent.com/supernovae-st/nika-registry/main/index.json) — every artifact with its pin, digest, cert summary and advisory state in one fetch
-- [`llms.txt`](https://raw.githubusercontent.com/supernovae-st/nika-registry/main/llms.txt) — the consume/verify path in agent-readable form
+- [`index.json`](https://raw.githubusercontent.com/nika-open/nika-registry/main/index.json) — every artifact with its pin, digest, cert summary and advisory state in one fetch
+- [`llms.txt`](https://raw.githubusercontent.com/nika-open/nika-registry/main/llms.txt) — the consume/verify path in agent-readable form
 
 ## Publish
 
 Your artifact stays in **your** git repo — the registry stores a pointer, a
 digest and a proof, never a copy. Open a PR adding an entry under your
 GitHub-owner namespace; CI re-proves it. See the
-[contributing guide](https://github.com/supernovae-st/nika-registry/blob/main/CONTRIBUTING.md).
+[contributing guide](https://github.com/nika-open/nika-registry/blob/main/CONTRIBUTING.md).

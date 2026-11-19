@@ -103,7 +103,7 @@ verbatim from the engine (`nika-http`):
     Scheme allow-list (`http`/`https` only), blocked hostnames, and
     range checks for implicit loopback, RFC 1918, link-local/metadata
     (`169.254.169.254`), CGN, IPv6 local, v4-mapped v6. Spec
-    [01-envelope Exact-loopback declassification](https://github.com/supernovae-st/nika-spec/blob/6390b08eb9791ce49c63ee17f8466fab118cadb8/spec/01-envelope.md):
+    [01-envelope Exact-loopback declassification](https://github.com/nika-open/nika-spec/blob/6390b08eb9791ce49c63ee17f8466fab118cadb8/spec/01-envelope.md):
     the **only** SSRF carve-out is an exact `permits.net.http` literal —
     the closed set `localhost`, a `127.x.y.z` v4 literal, or `::1` /
     `[::1]`. Clearing is exact-host: a permitted `localhost` does **not**
@@ -346,7 +346,7 @@ land on `main`, the only maintenance branch, and ship in the next release:
 0.124.x is maintained, and the 0.123.x line, the previous one, receives no
 further patches. Report against the latest release or `main`. Full policy,
 disclosure process and the out-of-scope list:
-[SECURITY.md](https://github.com/supernovae-st/nika/blob/main/SECURITY.md).
+[SECURITY.md](https://github.com/nika-open/nika/blob/main/SECURITY.md).
 
 ## See also
 
@@ -360,7 +360,7 @@ disclosure process and the out-of-scope list:
   <Card title="Builtins · fetch" icon="globe" href="/reference/builtins">
     The `nika:fetch` contract (engines MUST ship SSRF defense).
   </Card>
-  <Card title="SECURITY.md" icon="shield" href="https://github.com/supernovae-st/nika/blob/main/SECURITY.md">
+  <Card title="SECURITY.md" icon="shield" href="https://github.com/nika-open/nika/blob/main/SECURITY.md">
     Reporting, disclosure timeline, hall of fame.
   </Card>
 </CardGroup>

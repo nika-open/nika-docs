@@ -41,10 +41,10 @@ two kinds of codes on top of it:
   this engine cannot read).
 
 <Info>
-  **Canonical source:** [`spec/05-errors.md`](https://github.com/supernovae-st/nika-spec/blob/main/spec/05-errors.md)
+  **Canonical source:** [`spec/05-errors.md`](https://github.com/nika-open/nika-spec/blob/main/spec/05-errors.md)
   owns the taxonomy: engines *derive* from it, never the reverse. The
   machine-readable registry lives in the spec's
-  [`canon.yaml`](https://github.com/supernovae-st/nika-spec/blob/main/canon.yaml)
+  [`canon.yaml`](https://github.com/nika-open/nika-spec/blob/main/canon.yaml)
   and is also served as JSON at
   [`nika.sh/errors/catalog.json`](https://nika.sh/errors/catalog.json).
   The tables below are generated from that registry.
@@ -279,7 +279,7 @@ on_error:
 downstream task can branch on `${{ tasks.X.error.code }}` while the status
 reads `skipped`.
 
-<Card title="The full error model" icon="book" href="https://github.com/supernovae-st/nika-spec/blob/main/spec/05-errors.md">
+<Card title="The full error model" icon="book" href="https://github.com/nika-open/nika-spec/blob/main/spec/05-errors.md">
   Retry policies, backoff strategies, recovery semantics, and the
   gate-based failure propagation rules. See spec/05-errors.md.
 </Card>

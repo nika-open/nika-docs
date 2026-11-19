@@ -325,10 +325,19 @@ shows you chose it. An unknown value refuses to start (`NIKA-1711`).
 
   Replace `macos-arm64` with `macos-x64`, `linux-x64` or `linux-arm64` for
   your platform. `--ignore-missing` checks only the archives you downloaded.
+
   Releases up to 0.124.4 were built as `supernovae-st/nika`, the repository's
-  name before it moved to `nika-open`, and their provenance keeps that name:
-  for them, pass `--repo supernovae-st/nika` to `gh attestation verify` and
-  `--source-uri github.com/supernovae-st/nika` to `slsa-verifier`.
+  name before it moved to `nika-open`. Their provenance keeps that name, and
+  GitHub serves their attestations through the `supernovae-st` organization
+  only, so steps 2 and 3 verify them with:
+
+  ```bash
+  gh attestation verify nika-macos-arm64-<release>.tar.gz \
+    --owner supernovae-st --signer-repo supernovae-st/nika
+  slsa-verifier verify-artifact nika-macos-arm64-<release>.tar.gz \
+    --provenance-path multiple.intoto.jsonl \
+    --source-uri github.com/supernovae-st/nika --source-tag v<release>
+  ```
 </Check>
 
 ## A real answer, later

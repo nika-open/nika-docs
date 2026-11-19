@@ -318,7 +318,7 @@ To use a registry workflow, fetch it with the registry's own script, then
 work with the local file:
 
 ```bash
-git clone https://github.com/supernovae-st/nika-registry
+git clone https://github.com/nika-open/nika-registry
 python3 -m pip install pyyaml                          # get.py needs Python 3.11+ and PyYAML
 python3 nika-registry/scripts/get.py meeting-actions   # fetch the pinned bytes, verify their sha256, audit
 nika check meeting-actions.nika

@@ -30,7 +30,7 @@ nika catalog --tools --json   # the model-facing JSON Schemas (args · required)
 ```
 
 <Info>
-  **Canonical source:** [`nika-spec/stdlib/builtins-v0.1.md`](https://github.com/supernovae-st/nika-spec/blob/main/stdlib/builtins-v0.1.md),
+  **Canonical source:** [`nika-spec/stdlib/builtins-v0.1.md`](https://github.com/nika-open/nika-spec/blob/main/stdlib/builtins-v0.1.md),
   the Apache-2.0 language spec. The set was curated by the Rams
   "less but better" sweep (ADR-086/087/088): one super-powerful builtin
   with mode args beats five single-purpose ones.
@@ -101,7 +101,7 @@ format conversion, generation, time, hashing, adjudication.
 | [`nika:uuid`](/reference/tools/uuid) | Generate a UUID: `v7` default (timestamped/sortable, RFC 9562) or `v4`. |
 | [`nika:date`](/reference/tools/date) | Timestamp arithmetic: op-discriminated (`now`/`add`/`subtract`/`format`/`parse`/`diff`), timezone-aware, ISO 8601 out. |
 | [`nika:hash`](/reference/tools/hash) | Content hashing: default blake3, or `sha256`/`sha512`; md5/sha1 are not supported. |
-| [`nika:decide`](/reference/tools/decide) | The deterministic decision kernel ([spec 11](https://github.com/supernovae-st/nika-spec/blob/main/spec/11-decision.md)): evaluates a portable Decision Bundle (`bundle:`) against an EvidenceSnapshot (`evidence:`) and returns the full receipt — outcome, term-by-term contributions, intervals, conflicts with their witnesses, determination provenance. **The model never decides**: an `infer:` task collects the facts, this applies the rubric. Same evidence, same verdict, forever. Full contract: [The decision bundle](#the-decision-bundle). The specification files it under its own Decision family (hence the separate group in the tool contracts); `nika catalog --tools` lists it under DATA. |
+| [`nika:decide`](/reference/tools/decide) | The deterministic decision kernel ([spec 11](https://github.com/nika-open/nika-spec/blob/main/spec/11-decision.md)): evaluates a portable Decision Bundle (`bundle:`) against an EvidenceSnapshot (`evidence:`) and returns the full receipt — outcome, term-by-term contributions, intervals, conflicts with their witnesses, determination provenance. **The model never decides**: an `infer:` task collects the facts, this applies the rubric. Same evidence, same verdict, forever. Full contract: [The decision bundle](#the-decision-bundle). The specification files it under its own Decision family (hence the separate group in the tool contracts); `nika catalog --tools` lists it under DATA. |
 
 ```yaml
 # recursive deep-merge of two task outputs — pure jq, no extra builtin
@@ -153,7 +153,7 @@ refuses before anything is scored.
 | Region | What the kernel reads |
 |---|---|
 | `manifest` | `id` · `version` · `owner` · `license`, all required non-empty strings. `digest` and `valid_until` are carried, not checked (see below). |
-| `evidence_schema` | A non-empty map, one entry per evidence key. Per key: `type` (a [spec 09](https://github.com/supernovae-st/nika-spec/blob/main/spec/09-types.md) type expression, required) · `required` · `sources` (an allow-list) · `integrity` (the floor) · `identity: true`. |
+| `evidence_schema` | A non-empty map, one entry per evidence key. Per key: `type` (a [spec 09](https://github.com/nika-open/nika-spec/blob/main/spec/09-types.md) type expression, required) · `required` · `sources` (an allow-list) · `integrity` (the floor) · `identity: true`. |
 | `transforms` | Named, bounded feature transforms: `clamp` · `linear` · `bucket`. Integer basis points only, `min ≤ max`, and the input is clamped into `min..max` before the kind's arithmetic runs. That is what "total on its range" means: no input can fall outside. |
 | `rules` | `dimensions.<name>.terms[]` and `thresholds[]`. This is the whole scoring program. |
 | `governance` | `never_automatic: [outcome…]`, plus fields the kernel carries but does not read. |
@@ -438,7 +438,7 @@ hero:
 ## See also
 
 <CardGroup cols={2}>
-  <Card title="Full stdlib spec" icon="book-open" href="https://github.com/supernovae-st/nika-spec/blob/main/stdlib/builtins-v0.1.md">
+  <Card title="Full stdlib spec" icon="book-open" href="https://github.com/nika-open/nika-spec/blob/main/stdlib/builtins-v0.1.md">
     Per-builtin args, error codes (`NIKA-BUILTIN-*`), trust classes, and
     what jq subsumed out of v0.1.
   </Card>

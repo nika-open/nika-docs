@@ -67,7 +67,7 @@
       },
       {
         "type": "github",
-        "href": "https://github.com/supernovae-st/nika"
+        "href": "https://github.com/nika-open/nika"
       }
     ],
     "primary": {
@@ -78,7 +78,7 @@
   },
   "footer": {
     "socials": {
-      "github": "https://github.com/supernovae-st/nika",
+      "github": "https://github.com/nika-open/nika",
       "x": "https://x.com/ThibautMelen"
     },
     "links": [
@@ -104,11 +104,11 @@
         "items": [
           {
             "label": "Language spec (Apache-2.0)",
-            "href": "https://github.com/supernovae-st/nika-spec"
+            "href": "https://github.com/nika-open/nika-spec"
           },
           {
             "label": "Source (AGPL)",
-            "href": "https://github.com/supernovae-st/nika"
+            "href": "https://github.com/nika-open/nika"
           },
           {
             "label": "TypeScript SDK",
@@ -116,7 +116,7 @@
           },
           {
             "label": "Homebrew tap",
-            "href": "https://github.com/supernovae-st/homebrew-tap"
+            "href": "https://github.com/nika-open/homebrew-tap"
           }
         ]
       },

@@ -24,8 +24,8 @@ The one-liner everywhere: `brew install nika-open/tap/nika` — then
 | **Container image** | `docker run --rm ghcr.io/nika-open/nika:0.124.3 --version` (linux/amd64 · linux/arm64, entrypoint `nika`); mount a project with `docker run --rm -v "$PWD:/work" -w /work ghcr.io/nika-open/nika:0.124.3 check flow.nika` | [Installation](/getting-started/installation) |
 | **cargo binstall** | the prebuilt release tarball, no compile (`cargo binstall --git https://github.com/nika-open/nika nika-cli`) | [Installation](/getting-started/installation) |
 | **nix flake** | `nix run github:nika-open/nika/v0.124.3` builds that release tag, store-cached (the bare `github:nika-open/nika` builds `main`, which can be ahead of the release) | [Installation](/getting-started/installation) |
-| **GitHub CLI extension** | `gh extension install nika-open/gh-nika` → `gh nika check/run` — pass-through to a PATH `nika`, else a one-time checksum-verified release fetch (Actions runners · Codespaces) | [gh-nika](https://github.com/supernovae-st/gh-nika) |
-| **MCP oracle Dockerfile (kit)** | the read-only oracle in a container you build (`integrations/mcp/Dockerfile` in the kit) | [nika-plugins kit](https://github.com/supernovae-st/nika-plugins) |
+| **GitHub CLI extension** | `gh extension install nika-open/gh-nika` → `gh nika check/run` — pass-through to a PATH `nika`, else a one-time checksum-verified release fetch (Actions runners · Codespaces) | [gh-nika](https://github.com/nika-open/gh-nika) |
+| **MCP oracle Dockerfile (kit)** | the read-only oracle in a container you build (`integrations/mcp/Dockerfile` in the kit) | [nika-plugins kit](https://github.com/nika-open/nika-plugins) |
 
 ## Keeping the suite fresh
 
@@ -39,7 +39,7 @@ plugin, a marketplace never touches the binary. The ladder, per surface:
 | **Claude Code plugin** | `claude plugin marketplace update nika` **then** `claude plugin update nika@nika` | TWO rungs — the clone, then the install; restart after |
 | **Codex plugin** | `codex plugin marketplace upgrade nika` | the per-version cache refreshes on your next run |
 | **Cursor** | marketplace installs self-manage; a local drop re-syncs via the kit's `scripts/update-mirrors.sh` | — |
-| **Every surface at once** | `scripts/update-mirrors.sh` in a [nika-plugins](https://github.com/supernovae-st/nika-plugins) checkout | `--check` reports drift read-only (CI-able) |
+| **Every surface at once** | `scripts/update-mirrors.sh` in a [nika-plugins](https://github.com/nika-open/nika-plugins) checkout | `--check` reports drift read-only (CI-able) |
 
 <Info>
 `nika doctor` is the coherence oracle: from v0.107 it reads what each
@@ -72,7 +72,7 @@ train, and prints the exact per-client fix. Drift is advisory
 | **Claude Desktop** | `nika wire claude-desktop` writes the `claude_desktop_config.json` stanza | [Claude Desktop guide](/integrations/clients/claude-desktop) |
 | **Codex** | first-party plugin (`.codex-plugin` · same commands) + `nika wire codex` | [Codex guide](/integrations/clients/codex) |
 | **Grok Build** | reads the Claude Code kit natively · one marketplace add installs the full plugin (skills · subagents · commands · hooks · oracle) | [Grok Build guide](/integrations/clients/grok-build) |
-| **OpenClaude** | its loader reads the Claude Code marketplace layout · `openclaude plugin marketplace add nika-open/nika-plugins && openclaude plugin install nika@nika` installs the whole bundle unported | [kit dossier](https://github.com/supernovae-st/nika-plugins/tree/main/integrations/openclaude) |
+| **OpenClaude** | its loader reads the Claude Code marketplace layout · `openclaude plugin marketplace add nika-open/nika-plugins && openclaude plugin install nika@nika` installs the whole bundle unported | [kit dossier](https://github.com/nika-open/nika-plugins/tree/main/integrations/openclaude) |
 | **Hermes** | skill pack (`skills/autonomous-ai-agents/nika` · guard-scanned SAFE) | [Hermes guide](/integrations/hermes) |
 | **OpenCode** | `opencode.json` MCP stanza + native `.agents/` reading — `nika init` suffices | [OpenCode guide](/integrations/opencode) |
 | **goose** | MCP extension stanza + native `AGENTS.md` reading | [goose guide](/integrations/clients/goose) |
@@ -91,43 +91,43 @@ train, and prints the exact per-client fix. Drift is advisory
 
 | Element | What it is | Lives at |
 |---|---|---|
-| **SKILL.md pack** | the authoring skill (check-before-run law · cost honesty) — installable via `npx skills add nika-open/nika-plugins` | [nika-plugins kit](https://github.com/supernovae-st/nika-plugins) |
+| **SKILL.md pack** | the authoring skill (check-before-run law · cost honesty) — installable via `npx skills add nika-open/nika-plugins` | [nika-plugins kit](https://github.com/nika-open/nika-plugins) |
 | **Plugin commands** | the six `/nika:*` commands (check · compile · explain · trace · permits · doctor) mirrored from the engine | kit `.agents/plugins/nika/` |
 | **`nika-author` subagent** | routes an intent to a template, fills the `# SLOT:` markers, loops `nika check` until rc=0 — read-only | kit `.agents/plugins/nika/agents/` |
-| **Integration kit contract** | « You want to support Nika? Copy this folder » — pinned mirrors, drift-gated in CI | [kit README](https://github.com/supernovae-st/nika-plugins#readme) |
+| **Integration kit contract** | « You want to support Nika? Copy this folder » — pinned mirrors, drift-gated in CI | [kit README](https://github.com/nika-open/nika-plugins#readme) |
 
 ## MCP (the read-only oracle)
 
 `nika mcp` exposes 9 tools — validate, explain, examples, schema, cost — **no
-execution, no mutation, by design** ([threat model](https://github.com/supernovae-st/nika-plugins/blob/main/integrations/mcp/THREAT-MODEL.md)).
+execution, no mutation, by design** ([threat model](https://github.com/nika-open/nika-plugins/blob/main/integrations/mcp/THREAT-MODEL.md)).
 
 | Element | Where |
 |---|---|
 | Full tool reference | [MCP server reference](/reference/mcp-server) |
 | Per-client wiring (one dedicated page per client — the matrix) | [MCP clients](/integrations/mcp-clients) |
-| `server.json` (registry shape) + Dockerfile + threat model | [kit `integrations/mcp/`](https://github.com/supernovae-st/nika-plugins/tree/main/integrations/mcp) |
+| `server.json` (registry shape) + Dockerfile + threat model | [kit `integrations/mcp/`](https://github.com/nika-open/nika-plugins/tree/main/integrations/mcp) |
 
 ## CI/CD
 
 | Element | What it does | Where |
 |---|---|---|
-| **nika-action** — *plan with receipts* | check verdict · honest cost floor · permits · the DAG, as a sticky PR comment. Static, zero secrets by default | [GitHub Actions guide](/integrations/github-actions) · [repo](https://github.com/supernovae-st/nika-action) |
+| **nika-action** — *plan with receipts* | check verdict · honest cost floor · permits · the DAG, as a sticky PR comment. Static, zero secrets by default | [GitHub Actions guide](/integrations/github-actions) · [repo](https://github.com/nika-open/nika-action) |
 | **Offline test lane** | `nika test` golden runs on the mock provider — CI with no API key | [Local-first tutorial](/examples/local-first-daily-brief) |
 
 ## SDKs & language surfaces
 
 | Element | What it is | Where |
 |---|---|---|
-| **TypeScript SDK** | `@nika-open/nika@0.124.4` — one typed facade (`check` · `compile` · `run` · `run.events()` · `run.result()` · `traceVerify`) · Apache-2.0. `traceVerify` reads existing evidence; it does not seal, rerun, or prove the job was correct. | [SDK overview](/sdk/overview) · [source](https://github.com/supernovae-st/nika-client) |
-| **Language spec** | the `.nika` contract — Apache-2.0, runtime-agnostic | [nika-spec](https://github.com/supernovae-st/nika-spec) |
-| **Registry** | CI-re-proven workflow artifacts (hash + oracle + engine cert). In 0.124.3 a `registry:owner/name` coordinate is refused (`NIKA-REG-005`: the public index is schema 2, this engine reads schema 1): clone the registry and run `python3 scripts/get.py <name>` (Python 3.11+ with PyYAML), which fetches the pinned bytes and verifies their sha256, then `nika check` the local file | [nika-registry](https://github.com/supernovae-st/nika-registry) · [Known limits](/changelog/known-limits#registry-coordinates-are-refused) |
+| **TypeScript SDK** | `@nika-open/nika@0.124.4` — one typed facade (`check` · `compile` · `run` · `run.events()` · `run.result()` · `traceVerify`) · Apache-2.0. `traceVerify` reads existing evidence; it does not seal, rerun, or prove the job was correct. | [SDK overview](/sdk/overview) · [source](https://github.com/nika-open/nika-client) |
+| **Language spec** | the `.nika` contract — Apache-2.0, runtime-agnostic | [nika-spec](https://github.com/nika-open/nika-spec) |
+| **Registry** | CI-re-proven workflow artifacts (hash + oracle + engine cert). In 0.124.3 a `registry:owner/name` coordinate is refused (`NIKA-REG-005`: the public index is schema 2, this engine reads schema 1): clone the registry and run `python3 scripts/get.py <name>` (Python 3.11+ with PyYAML), which fetches the pinned bytes and verifies their sha256, then `nika check` the local file | [nika-registry](https://github.com/nika-open/nika-registry) · [Known limits](/changelog/known-limits#registry-coordinates-are-refused) |
 | **Local inference lane** | `nika model pull <owner/repo[:QUANT]>` downloads a GGUF into `~/.nika/models`, then `nika model serve --model <id>` starts an OpenAI-compatible server on `127.0.0.1:8712` (Qwen3-family models in 0.124.3) that a workflow reaches as `llamacpp/<id>` with `NIKA_LLAMACPP_BASE_URL=http://127.0.0.1:8712` · `list`/`rm` manage the disk | [Local models](/guides/local-models) · [CLI reference](/reference/cli) |
 
 ## Where Nika is listed
 
 Marketplaces and directories where you'll find us today — the public
 submissions ledger (with pinned descriptions and review cadence) lives in
-[`listings.yaml`](https://github.com/supernovae-st/nika-plugins/blob/main/listings.yaml).
+[`listings.yaml`](https://github.com/nika-open/nika-plugins/blob/main/listings.yaml).
 
 - [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=supernovae.nika) · [OpenVSX](https://open-vsx.org/extension/supernovae/nika) — the editor extension, frozen at 0.120 and not qualified with 0.124: use `nika lsp` and the JSON Schema
 - [skills.sh](https://skills.sh/supernovae-st/nika-plugins) — the skill pack
@@ -151,6 +151,6 @@ that fetches still reaches its host), and the
 
 <Tip>
 Something missing? The kit contract makes adding a surface a folder-copy:
-[`nika-plugins`](https://github.com/supernovae-st/nika-plugins) — and the
+[`nika-plugins`](https://github.com/nika-open/nika-plugins) — and the
 [integration quickstart](/integrations/quickstart) is the 10-minute path.
 </Tip>

@@ -43,7 +43,7 @@ signed-in agent app for ([Model and access](/concepts/providers#model-and-access
 The file is the contract; `--var` and the SDK's `inputs` supply caller values.
 
 <Info>
-  Envelope law: [nika-spec 01-envelope](https://github.com/supernovae-st/nika-spec/blob/main/spec/01-envelope.md).
+  Envelope law: [nika-spec 01-envelope](https://github.com/nika-open/nika-spec/blob/main/spec/01-envelope.md).
   [Live binary](/reference/status) is the implementation you download.
 </Info>
 
@@ -255,7 +255,7 @@ tasks:
 ```
 
 The run fails (`work` failed, exit 1), and `cleanup` still runs and logs.
-[Spec 03 · unwind](https://github.com/supernovae-st/nika-spec/blob/main/spec/03-dag.md)
+[Spec 03 · unwind](https://github.com/nika-open/nika-spec/blob/main/spec/03-dag.md)
 has the full rule.
 
 ### Fan-in: group
@@ -507,7 +507,7 @@ nika run brief-with-stats.nika --var topic="local-first AI"
 
 Each child keeps its **own** hash-chained trace; the parent's trace records
 the child's outcome, so a run is a forest of chains rather than one flattened
-stream. Full contract: [spec 14 · Composition](https://github.com/supernovae-st/nika-spec/blob/main/spec/14-composition.md).
+stream. Full contract: [spec 14 · Composition](https://github.com/nika-open/nika-spec/blob/main/spec/14-composition.md).
 
 ### Supply values at launch · `--var`
 

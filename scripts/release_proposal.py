@@ -20,7 +20,7 @@ import subprocess
 import sys
 import time
 
-REPO = "supernovae-st/nika-docs"
+REPO = "nika-open/nika-docs"
 GATE = ".github/workflows/gate.yml"
 ALLOWED = {"snippets/_status-snapshot.mdx", "snippets/data/releases.json",
            "changelog/releases.mdx", "estate.yaml"}

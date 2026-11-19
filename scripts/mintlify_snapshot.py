@@ -24,7 +24,7 @@ import tempfile
 from first_command import KNOWN_LABELS, read_first_command
 
 SNAPSHOT = Path(__file__).resolve().parents[1] / "snippets/_status-snapshot.mdx"
-REPOSITORY = "supernovae-st/nika"
+REPOSITORY = "nika-open/nika"
 PROBE_TIMEOUT = 15
 VERSION = r"(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)"
 

@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "repository": "supernovae-st/nika",
+  "repository": "nika-open/nika",
   "releases": [
     {
       "tag": "v0.124.4",
       "name": "v0.124.4",
       "publishedAt": "2026-11-12T09:58:13Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.124.4",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.124.4",
       "assetCount": 8,
       "highlights": [
         "nika serve --cost-policy admits runs on an unpriced route with no per-run cost review.",
@@ -19,7 +19,7 @@
       "tag": "v0.124.3",
       "name": "v0.124.3",
       "publishedAt": "2026-11-10T21:26:40Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.124.3",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.124.3",
       "assetCount": 8,
       "highlights": [
         "nika serve answers what a workflow's declared ACP route offers, without a prompt."
@@ -30,7 +30,7 @@
       "tag": "v0.124.2",
       "name": "v0.124.2",
       "publishedAt": "2026-11-10T06:26:43Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.124.2",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.124.2",
       "assetCount": 8,
       "highlights": [
         "A workflow can ask its route for a service tier.",
@@ -43,7 +43,7 @@
       "tag": "v0.124.1",
       "name": "v0.124.1",
       "publishedAt": "2026-10-28T09:56:26Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.124.1",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.124.1",
       "assetCount": 8,
       "highlights": [
         "The SDK guard reads what the published @supernovae-st/nika 0.124.0 closes.",
@@ -56,7 +56,7 @@
       "tag": "v0.124.0",
       "name": "v0.124.0",
       "publishedAt": "2026-10-27T21:48:49Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.124.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.124.0",
       "assetCount": 8,
       "highlights": [
         "nika doctor and nika welcome name which nika is running.",
@@ -69,7 +69,7 @@
       "tag": "v0.123.2",
       "name": "v0.123.2",
       "publishedAt": "2026-10-26T09:53:57Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.123.2",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.123.2",
       "assetCount": 8,
       "highlights": [
         "nika serve downloads the artifacts a settled job's sealed journal records.",
@@ -82,7 +82,7 @@
       "tag": "v0.123.1",
       "name": "v0.123.1",
       "publishedAt": "2026-10-25T11:12:44Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.123.1",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.123.1",
       "assetCount": 8,
       "highlights": [
         "The repository's documents describe the released 0.123.0 and its maintenance.",
@@ -95,7 +95,7 @@
       "tag": "v0.123.0",
       "name": "v0.123.0",
       "publishedAt": "2026-10-23T22:12:05Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.123.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.123.0",
       "assetCount": 8,
       "highlights": [
         "Say it once, keep it as a file.",
@@ -108,7 +108,7 @@
       "tag": "v0.122.0",
       "name": "v0.122.0",
       "publishedAt": "2026-10-02T23:38:44Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.122.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.122.0",
       "assetCount": 8,
       "highlights": [],
       "notesSha256": "6b7900f047b9260f5ad461c2488bdf1e1c0d4e478ff76144326ceaea2068303b"
@@ -117,7 +117,7 @@
       "tag": "v0.121.0",
       "name": "v0.121.0",
       "publishedAt": "2026-09-25T12:58:31Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.121.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.121.0",
       "assetCount": 8,
       "highlights": [
         "A conversation from the request to an inspectable result."
@@ -128,7 +128,7 @@
       "tag": "v0.120.3",
       "name": "v0.120.3",
       "publishedAt": "2026-09-20T10:14:14Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.120.3",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.120.3",
       "assetCount": 8,
       "highlights": [
         "Serve authoring door (foundation).",
@@ -140,7 +140,7 @@
       "tag": "v0.120.2",
       "name": "v0.120.2",
       "publishedAt": "2026-09-19T17:43:29Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.120.2",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.120.2",
       "assetCount": 8,
       "highlights": [
         "The release train also tags vX.Y.Z on the same GHCR manifest.",
@@ -153,7 +153,7 @@
       "tag": "v0.120.1",
       "name": "v0.120.1",
       "publishedAt": "2026-09-18T22:35:56Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.120.1",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.120.1",
       "assetCount": 8,
       "highlights": [
         "Compile derives private pattern facets from the AST.",
@@ -166,7 +166,7 @@
       "tag": "v0.120.0",
       "name": "v0.120.0",
       "publishedAt": "2026-09-18T18:59:17Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.120.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.120.0",
       "assetCount": 8,
       "highlights": [
         "Scheduled beats carry per-beat inputs.",
@@ -179,7 +179,7 @@
       "tag": "v0.119.0",
       "name": "v0.119.0",
       "publishedAt": "2026-09-13T17:03:41Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.119.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.119.0",
       "assetCount": 8,
       "highlights": [
         "The card names the prompt side of the bill.",
@@ -192,7 +192,7 @@
       "tag": "v0.118.7",
       "name": "v0.118.7",
       "publishedAt": "2026-09-05T17:58:35Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.118.7",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.118.7",
       "assetCount": 8,
       "highlights": [
         "File journals refuse bytes beyond the verifier's existing bounds.",
@@ -205,7 +205,7 @@
       "tag": "v0.118.6",
       "name": "v0.118.6",
       "publishedAt": "2026-09-05T14:28:46Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.118.6",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.118.6",
       "assetCount": 8,
       "highlights": [
         "Authoring guidance follows composition and cleanup contracts.",
@@ -218,7 +218,7 @@
       "tag": "v0.116.2",
       "name": "v0.116.2",
       "publishedAt": "2026-08-31T21:51:24Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.116.2",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.116.2",
       "assetCount": 8,
       "highlights": [
         "0.116.2 supersedes the unpublished 0.116.1 tag.",
@@ -231,7 +231,7 @@
       "tag": "v0.116.0",
       "name": "v0.116.0",
       "publishedAt": "2026-08-31T07:30:56Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.116.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.116.0",
       "assetCount": 8,
       "highlights": [
         "One SDK gains a durable resident HTTP authority.",
@@ -244,7 +244,7 @@
       "tag": "v0.115.0",
       "name": "v0.115.0",
       "publishedAt": "2026-08-26T18:28:03Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.115.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.115.0",
       "assetCount": 8,
       "highlights": [
         "nika check --json carries one-obvious-way lints.",
@@ -257,7 +257,7 @@
       "tag": "v0.114.0",
       "name": "v0.114.0",
       "publishedAt": "2026-08-23T13:54:46Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.114.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.114.0",
       "assetCount": 8,
       "highlights": [
         "nika serve --bind is authenticated loopback HTTP.",
@@ -270,7 +270,7 @@
       "tag": "v0.113.0",
       "name": "v0.113.0",
       "publishedAt": "2026-08-21T19:06:47Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.113.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.113.0",
       "assetCount": 8,
       "highlights": [
         "nika check now judges every native shell segment, not only the head.",
@@ -283,7 +283,7 @@
       "tag": "v0.112.0",
       "name": "v0.112.0",
       "publishedAt": "2026-08-20T23:37:01Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.112.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.112.0",
       "assetCount": 8,
       "highlights": [
         "nika list names every workflow below the current directory.",
@@ -296,7 +296,7 @@
       "tag": "v0.111.0",
       "name": "v0.111.0",
       "publishedAt": "2026-08-19T19:02:18Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.111.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.111.0",
       "assetCount": 8,
       "highlights": [
         "paid_ready · compiled · next on nika check --json (#1013).",
@@ -309,7 +309,7 @@
       "tag": "v0.110.0",
       "name": "v0.110.0",
       "publishedAt": "2026-08-19T12:59:38Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.110.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.110.0",
       "assetCount": 8,
       "highlights": [
         "The project file carries the thirteen beat keys (arm: · W1 · #993).",
@@ -322,7 +322,7 @@
       "tag": "v0.109.2",
       "name": "v0.109.2 — the nine-key release (installable)",
       "publishedAt": "2026-08-18T23:23:10Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.109.2",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.109.2",
       "assetCount": 8,
       "highlights": [
         "An expression sees only its input (#959).",
@@ -335,7 +335,7 @@
       "tag": "v0.109.1",
       "name": "v0.109.1 — the release the release gate refused (tag · no assets)",
       "publishedAt": "2026-08-19T00:09:08Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.109.1",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.109.1",
       "assetCount": 0,
       "highlights": [
         "The release gates speak the live envelope (funnel e2e · trust battery).",
@@ -347,7 +347,7 @@
       "tag": "v0.109.0",
       "name": "v0.109.0 — the nine-key release (tag · no assets)",
       "publishedAt": "2026-08-19T00:09:07Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.109.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.109.0",
       "assetCount": 0,
       "highlights": [
         "An expression sees only its input (#959).",
@@ -360,7 +360,7 @@
       "tag": "v0.108.0",
       "name": "v0.108.0",
       "publishedAt": "2026-08-05T17:39:16Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.108.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.108.0",
       "assetCount": 8,
       "highlights": [
         "Execution access · step 3 — the ACP harness class",
@@ -373,7 +373,7 @@
       "tag": "v0.107.2",
       "name": "v0.107.2",
       "publishedAt": "2026-08-02T17:27:52Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.107.2",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.107.2",
       "assetCount": 8,
       "highlights": [
         "A permit could name a system root by shouting it.",
@@ -386,7 +386,7 @@
       "tag": "v0.107.1",
       "name": "v0.107.1",
       "publishedAt": "2026-08-02T12:49:13Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.107.1",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.107.1",
       "assetCount": 8,
       "highlights": [
         "One door catalog, one ratchet.",
@@ -399,7 +399,7 @@
       "tag": "v0.107.0",
       "name": "v0.107.0",
       "publishedAt": "2026-08-01T16:21:44Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.107.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.107.0",
       "assetCount": 8,
       "highlights": [
         "nika try [slug] — see it work, own nothing",
@@ -412,7 +412,7 @@
       "tag": "v0.106.1",
       "name": "v0.106.1",
       "publishedAt": "2026-07-28T21:18:17Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.106.1",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.106.1",
       "assetCount": 8,
       "highlights": [
         "catalog",
@@ -425,7 +425,7 @@
       "tag": "v0.106.0",
       "name": "v0.106.0",
       "publishedAt": "2026-07-27T23:24:02Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.106.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.106.0",
       "assetCount": 6,
       "highlights": [
         "nika-check",
@@ -438,7 +438,7 @@
       "tag": "v0.105.0",
       "name": "v0.105.0",
       "publishedAt": "2026-07-20T07:57:19Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.105.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.105.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "97c1e0cf7435cea12039647cbff5490493d358e1498cdbafcf764b8cae5cfb9c"
@@ -447,7 +447,7 @@
       "tag": "v0.104.0",
       "name": "v0.104.0",
       "publishedAt": "2026-07-17T15:02:30Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.104.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.104.0",
       "assetCount": 5,
       "highlights": [
         "moonshot joins the canonical catalog (17 providers · 11 cloud + 5 local + 1 test)",
@@ -460,7 +460,7 @@
       "tag": "v0.103.0",
       "name": "v0.103.0",
       "publishedAt": "2026-07-13T12:00:28Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.103.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.103.0",
       "assetCount": 5,
       "highlights": [
         "exec semantics never fork on a YAML type again",
@@ -473,7 +473,7 @@
       "tag": "v0.102.0",
       "name": "v0.102.0",
       "publishedAt": "2026-07-13T08:20:04Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.102.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.102.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "f11ecf23e4fe224ce199b4fa2d8122ef084fdee814960653aa3bb3f56f1bac1d"
@@ -482,7 +482,7 @@
       "tag": "v0.101.0",
       "name": "v0.101.0",
       "publishedAt": "2026-07-12T23:04:59Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.101.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.101.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "8d7067127f12ec3c2fa1295890b2efd93bd0093b69fc2ad756e06b211ed47aad"
@@ -491,7 +491,7 @@
       "tag": "v0.100.0",
       "name": "v0.100.0",
       "publishedAt": "2026-07-12T21:18:02Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.100.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.100.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "20d9a801b1e0b3be1e2c27417e779a50d7c70205fa409ebdc554f0e45a654e6c"
@@ -500,7 +500,7 @@
       "tag": "v0.99.0",
       "name": "v0.99.0",
       "publishedAt": "2026-07-10T07:56:18Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.99.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.99.0",
       "assetCount": 8,
       "highlights": [
         "nika:image_fx — deterministic artistic effects, the 26th builtin (stdlib §Media graduate #3).",
@@ -513,7 +513,7 @@
       "tag": "v0.98.0",
       "name": "v0.98.0",
       "publishedAt": "2026-07-08T16:41:42Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.98.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.98.0",
       "assetCount": 8,
       "highlights": [],
       "notesSha256": "ac3a9547eac3be5f95bdb7daf0d7097a9e795b6df8ca89bebaae69b49277abe8"
@@ -522,7 +522,7 @@
       "tag": "v0.97.0",
       "name": "v0.97.0 — the run becomes evidence",
       "publishedAt": "2026-07-07T14:01:08Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.97.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.97.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "46633727f41f400986f0df725df6a220e85e021762ba4a50e8b4e4ba2aec2ca2"
@@ -531,7 +531,7 @@
       "tag": "v0.96.0",
       "name": "v0.96.0 — the run becomes a place",
       "publishedAt": "2026-07-06T18:54:09Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.96.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.96.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "980fa459dcb8b0560112766dfff1770d50f484ece8d1e2a0d6df54bb51264a98"
@@ -540,7 +540,7 @@
       "tag": "v0.95.0",
       "name": "v0.95.0 — the catalog practices local-first",
       "publishedAt": "2026-07-06T14:11:34Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.95.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.95.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "6ca1463497b2803893de3099927559c1e1da5b3a00cca03a40b21761b06da5a0"
@@ -549,7 +549,7 @@
       "tag": "v0.94.0",
       "name": "v0.94.0 — the media suite",
       "publishedAt": "2026-07-06T09:09:11Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.94.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.94.0",
       "assetCount": 5,
       "highlights": [
         "The media suite",
@@ -562,7 +562,7 @@
       "tag": "v0.93.1",
       "name": "v0.93.1 — the embedded pack teaches 2026 models",
       "publishedAt": "2026-07-05T02:46:34Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.93.1",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.93.1",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "9fe90eb4aca837463568ecfe13ce3e97010b13a60ddaca8528a58b1ab7f83107"
@@ -571,7 +571,7 @@
       "tag": "v0.93.0",
       "name": "v0.93.0 — resume · test harness · local thinking models unbricked",
       "publishedAt": "2026-07-05T02:16:15Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.93.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.93.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "c9587ba3a999bfef50255c22a4787c1fab23d5aa98fdd9e18f072064026d6706"
@@ -580,7 +580,7 @@
       "tag": "v0.92.0",
       "name": "v0.92.0 — agent-native",
       "publishedAt": "2026-07-03T03:23:32Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.92.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.92.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "ec87dd2804973176e43911a3c7ef78b87922c3a368cb2f312b0b211136ae15f3"
@@ -589,7 +589,7 @@
       "tag": "v0.91.0",
       "name": "v0.91.0 — onboarding wiring · headless builds",
       "publishedAt": "2026-06-25T15:26:43Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.91.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.91.0",
       "assetCount": 5,
       "highlights": [
         "Smoother first 15 minutes",
@@ -602,7 +602,7 @@
       "tag": "v0.90.0",
       "name": "v0.90.0 — the first public release 🦋",
       "publishedAt": "2026-06-21T14:49:22Z",
-      "url": "https://github.com/supernovae-st/nika/releases/tag/v0.90.0",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.90.0",
       "assetCount": 5,
       "highlights": [],
       "notesSha256": "bd4c3238c25aaca156f155df254d390c8d148c61a6c1670b83f5dc0b001e3a35"

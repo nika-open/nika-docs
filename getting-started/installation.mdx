@@ -56,14 +56,14 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
     (x64, arm64).
 
     ```bash
-    npm install -g @supernovae-st/nika
+    npm install -g @nika-open/nika
     nika --version
     ```
 
     One package gives you the `nika` command and the
     [TypeScript SDK](/sdk/overview). The verified engine for your platform
     arrives as an optional dependency, so keep optional dependencies enabled.
-    Installed per project instead (`npm install @supernovae-st/nika`), the
+    Installed per project instead (`npm install @nika-open/nika`), the
     command is `./node_modules/.bin/nika`, or `npm exec --no -- nika`.
 
     <Warning>
@@ -395,7 +395,7 @@ Remove the binary the way you installed it:
 ```bash
 brew uninstall nika                          # Homebrew
 rm ~/.nika/bin/nika                          # install script without Homebrew
-npm uninstall -g @supernovae-st/nika         # npm
+npm uninstall -g @nika-open/nika             # npm
 rm ~/.cargo/bin/nika                         # cargo binstall or cargo install
 nix profile remove nika                      # Nix (see `nix profile list` for the name)
 docker image rm ghcr.io/supernovae-st/nika:0.124.3   # container

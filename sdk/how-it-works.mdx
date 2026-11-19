@@ -7,7 +7,7 @@ icon: "diagram-project"
 
 import { SDK, SourceContract } from "/snippets/_sdk-contract.mdx"
 
-`@supernovae-st/nika` lets a TypeScript application run `.nika` workflows and
+`@nika-open/nika` lets a TypeScript application run `.nika` workflows and
 prove what they did. It is a thin, typed client: the Nika engine parses,
 checks, runs and records every workflow, and the SDK carries the engine's
 answers to your code. It never parses a workflow, re-implements a check or
@@ -20,7 +20,7 @@ constructor chooses; every method keeps its name and meaning on both.
 
 ```mermaid
 flowchart LR
-  app(["Your TypeScript app"]) --> sdk["@supernovae-st/nika"]
+  app(["Your TypeScript app"]) --> sdk["@nika-open/nika"]
   sdk -->|"new Nika({ cwd })"| local["bundled nika engine<br/>child process in cwd"]
   sdk -->|"new Nika({ url, token })"| serve["nika serve --bind<br/>your server, over HTTP(S)"]
   local --> out["typed result<br/>+ receipt"]
@@ -151,7 +151,7 @@ host), and `run()` takes an `idempotencyKey` in place of `maxCostUsd`, which
 a server run refuses. On the local engine:
 
 ```ts
-import { Nika, isNikaRunSucceeded } from '@supernovae-st/nika'
+import { Nika, isNikaRunSucceeded } from '@nika-open/nika'
 
 const nika = new Nika({ cwd: process.cwd() })
 const run = await nika.run<{ greeting: string }>('hello.nika', { maxCostUsd: 0 })

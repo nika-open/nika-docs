@@ -13,7 +13,7 @@ Every run writes a hash-chained record. The result hands your code a
 The SDK never reads a trace or does cryptography itself.
 
 ```ts verify.mts
-import { Nika, isNikaRunSucceeded } from '@supernovae-st/nika'
+import { Nika, isNikaRunSucceeded } from '@nika-open/nika'
 
 const nika = new Nika({ cwd: process.cwd() })
 const run = await nika.run('hello.nika')

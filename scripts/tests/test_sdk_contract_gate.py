@@ -25,7 +25,7 @@ class SdkContractGateTest(unittest.TestCase):
             root = pathlib.Path(directory)
             (root / "sdk").mkdir()
             (root / "sdk" / "install.mdx").write_text(
-                f"npm install @supernovae-st/nika@{pin}\n", encoding="utf-8"
+                f"npm install @nika-open/nika@{pin}\n", encoding="utf-8"
             )
             if source is not None:
                 (root / "snippets").mkdir()
@@ -92,7 +92,7 @@ class SdkContractGateTest(unittest.TestCase):
                 self.assertTrue(any("retired package name" in item
                                     for item in self.check_document(text)))
         self.assertEqual([], self.check_document(
-            "import { Nika } from '@supernovae-st/nika'"
+            "import { Nika } from '@nika-open/nika'"
         ))
         self.assertEqual([], self.check_document(
             "https://github.com/supernovae-st/nika-client"
@@ -113,14 +113,14 @@ class SdkContractGateTest(unittest.TestCase):
             root = pathlib.Path(directory)
             (root / "snippets").mkdir()
             (root / "snippets" / "_sdk-contract.mdx").write_text(
-                'package: "@supernovae-st/nika",\nsourceVersion: "9.8.7",\n',
+                'package: "@nika-open/nika",\nsourceVersion: "9.8.7",\n',
                 encoding="utf-8",
             )
             for output in ('"9.8.6"', '["9.8.7"]', 'not json', '"9.8.7"'):
                 with self.subTest(output=output), patch.object(GATE.subprocess, "run") as run:
                     run.return_value.stdout = output
                     self.assertEqual(not bool(GATE.verify_npm(root)), output == '"9.8.7"')
-                    self.assertIn("@supernovae-st/nika@9.8.7", run.call_args.args[0])
+                    self.assertIn("@nika-open/nika@9.8.7", run.call_args.args[0])
             for error in (FileNotFoundError(), subprocess.TimeoutExpired("npm", 30),
                           subprocess.CalledProcessError(1, "npm", stderr="E404")):
                 with self.subTest(error=error), patch.object(GATE.subprocess, "run", side_effect=error):
@@ -143,6 +143,9 @@ class SdkContractGateTest(unittest.TestCase):
             failures = GATE.findings(root)
             self.assertTrue(any("split local class" in item for item in failures))
             self.assertTrue(any("split local import" in item for item in failures))
+        self.assertTrue(any("split local import" in item for item in self.check_document(
+            "import { Nika } from '@nika-open/nika/local'"
+        )))
 
 
 if __name__ == "__main__":

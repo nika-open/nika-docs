@@ -10,7 +10,7 @@ import { SDK, SourceContract, LocalContract } from "/snippets/_sdk-contract.mdx"
 ## Construct the client
 
 ```ts
-import { Nika } from '@supernovae-st/nika'
+import { Nika } from '@nika-open/nika'
 
 const nika = new Nika({
   bin: '/opt/nika/bin/nika',
@@ -20,7 +20,7 @@ const nika = new Nika({
 
 Both options are optional. Engine resolution is strict: `bin`, then
 `NIKA_BIN`, then the platform package npm installed with the SDK
-(`@supernovae-st/nika-<os>-<arch>`). `bin` and `NIKA_BIN` must be absolute
+(`@nika-open/nika-<os>-<arch>`). `bin` and `NIKA_BIN` must be absolute
 paths: a bare name or a relative path throws `NikaConfigurationError`, and a
 missing file fails the engine's identity probe with `NikaCompatibilityError`.
 A `nika` on your `PATH` is never used. `cwd` anchors relative workflow paths,

@@ -19,7 +19,7 @@ Against the server of the [server quickstart](/sdk/remote/serve-quickstart):
 
 ```ts schedule.mts
 import { readFile } from 'node:fs/promises'
-import { Nika, NikaOperationError } from '@supernovae-st/nika'
+import { Nika, NikaOperationError } from '@nika-open/nika'
 
 const token = (await readFile('.nika/serve.token', 'utf8')).trim()
 const nika = new Nika({ url: 'http://127.0.0.1:8787', token, allowInsecureHttp: true })

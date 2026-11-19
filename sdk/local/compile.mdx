@@ -20,7 +20,7 @@ of a file), and edits the constants of an existing workflow. No provider is
 called, whatever keys your environment holds.
 
 ```ts compile.mts
-import { Nika } from '@supernovae-st/nika'
+import { Nika } from '@nika-open/nika'
 
 const nika = new Nika({ cwd: process.cwd() })
 
@@ -60,7 +60,7 @@ incomplete outcome, keyed by each question's `key`. The deterministic
 compiler settles this request's structure; only the run-time model is open:
 
 ```ts answer.mts
-import { Nika, isNikaCompileHeld, nextCompileRequest, type NikaCompileRequest } from '@supernovae-st/nika'
+import { Nika, isNikaCompileHeld, nextCompileRequest, type NikaCompileRequest } from '@nika-open/nika'
 
 const nika = new Nika({ cwd: process.cwd() })
 

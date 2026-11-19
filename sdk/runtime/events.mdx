@@ -12,7 +12,7 @@ on both transports, the task a `task.*` event names, the engine's own status
 word, and the exact engine frame on `event.raw`.
 
 ```ts events.mts
-import { Nika } from '@supernovae-st/nika'
+import { Nika } from '@nika-open/nika'
 
 const nika = new Nika({ cwd: process.cwd() })
 const run = await nika.run('hello.nika')
@@ -89,7 +89,7 @@ event and `run.status()`.
   ── screen cleared ──
 
   $ cat watch.mts
-  import { Nika } from '@supernovae-st/nika';
+  import { Nika } from '@nika-open/nika';
 
   const nika = new Nika({ cwd: process.cwd() });
   const run = await nika.run<{ brief: string }>('brief.nika', { maxCostUsd: 0 });
@@ -157,7 +157,7 @@ A workflow file can declare how its model calls must travel: `run.access`
 them:
 
 ```ts
-import { readNikaAccessRequirement, readNikaAccessSelection } from '@supernovae-st/nika';
+import { readNikaAccessRequirement, readNikaAccessSelection } from '@nika-open/nika';
 
 for await (const event of run.events()) {
   if (event.kind !== 'task.completed') continue;

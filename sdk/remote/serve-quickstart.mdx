@@ -69,7 +69,7 @@ starts one on your machine and drives it with the client from the
 
     ```ts remote.mts
     import { readFile } from 'node:fs/promises'
-    import { Nika, isNikaRunSucceeded } from '@supernovae-st/nika'
+    import { Nika, isNikaRunSucceeded } from '@nika-open/nika'
 
     const token = (await readFile('.nika/serve.token', 'utf8')).trim()
     const nika = new Nika({

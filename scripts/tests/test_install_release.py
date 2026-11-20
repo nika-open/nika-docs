@@ -18,7 +18,14 @@ from unittest.mock import patch
 SCRIPTS = Path(__file__).resolve().parents[1]
 TAG = "v0.116.2"
 COMMIT = "c4cdbeafb" + "1" * 31
-WORKFLOW = "supernovae-st/nika/.github/workflows/release.yml"
+REPO = "nika-open/nika"
+# Releases up to v0.124.4, TAG among them, were built and signed as supernovae-st/nika.
+LEGACY_SIGNER = "supernovae-st/nika"
+WORKFLOW = f"{LEGACY_SIGNER}/.github/workflows/release.yml"
+# Since the move, GitHub returns their attestations only by organization; a lookup
+# by either repository name answers 404. Later releases are found by repository.
+LEGACY_LOOKUP = ["--owner", "supernovae-st"]
+NEW_LOOKUP = ["--repo", REPO]
 
 
 class InstallerTest(unittest.TestCase):
@@ -45,6 +52,7 @@ class InstallerTest(unittest.TestCase):
             "release": {"tagName": TAG, "isDraft": False, "isPrerelease": False,
                         "publishedAt": "2026-08-31T21:51:24Z"},
             "commit": COMMIT, "sourceRef": f"refs/tags/{TAG}", "workflow": WORKFLOW,
+            "lookup": LEGACY_LOOKUP,
         }
         common = (f"#!{sys.executable}\nimport json, pathlib, shutil, sys\n"
                   f"data=json.loads(pathlib.Path({str(self.fixture)!r}).read_text())\n"
@@ -57,8 +65,11 @@ if args[:2] == ['release','view']:
 elif args[0] == 'api':
  print(json.dumps({{'ref': 'refs/tags/'+data['release']['tagName'], 'object': {{'type':'commit','sha':data['commit']}}}}))
 elif args[:2] == ['attestation','verify']:
- expected = {{'--repo':'supernovae-st/nika',
-             '--source-ref':data['sourceRef'], '--source-digest':data['commit'],
+ if '--owner' in args and '--repo' in args: sys.exit(14)
+ flag, scope = data['lookup']
+ if flag not in args or args[args.index(flag)+1] != scope:
+  print('Error: HTTP 404: Not Found', file=sys.stderr); sys.exit(13)
+ expected = {{'--source-ref':data['sourceRef'], '--source-digest':data['commit'],
              '--cert-identity':'https://github.com/'+data['workflow']+'@'+data['sourceRef'],
              '--predicate-type':'https://slsa.dev/provenance/v1'}}
  for key, value in expected.items():
@@ -95,7 +106,7 @@ shutil.copyfile(source, args[args.index('--output')+1])
     def prepare(self):
         self.data['release'].setdefault('assets', [
             {"name": name, "size": path.stat().st_size, "state": "uploaded",
-             "url": f"https://github.com/supernovae-st/nika/releases/download/{TAG}/{name}"}
+             "url": f"https://github.com/{REPO}/releases/download/{self.data['release']['tagName']}/{name}"}
             for name, path in [(self.asset, self.archive), ('SHA256SUMS', self.checksums)]])
         self.fixture.write_text(json.dumps(self.data))
 
@@ -158,6 +169,49 @@ shutil.copyfile(source, args[args.index('--output')+1])
                 self.data[key] = value
                 self.assert_red()
                 self.data = before
+
+    def test_provenance_signer_follows_the_repository_move(self):
+        sys.path.insert(0, str(SCRIPTS))
+        import install_release as installer
+        self.assertEqual(installer.REPO, REPO)
+        for tag, signer, lookup in [(TAG, LEGACY_SIGNER, LEGACY_LOOKUP),
+                                    ('v0.124.4', LEGACY_SIGNER, LEGACY_LOOKUP),
+                                    ('v0.124.5', REPO, NEW_LOOKUP), ('v0.125.0', REPO, NEW_LOOKUP),
+                                    ('v1.0.0', REPO, NEW_LOOKUP)]:
+            with self.subTest(tag=tag):
+                self.assertEqual(installer.signer(tag), signer)
+                self.assertEqual(installer.attestation_lookup(tag), lookup)
+        with self.assertRaises(ValueError):
+            installer.signer('v0.124')
+
+    def test_release_before_the_move_is_found_under_its_original_organization(self):
+        result = self.run_install()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        verify = next(c for c in self.calls() if c[1:3] == ['attestation', 'verify'])
+        self.assertEqual(verify[verify.index('--owner') + 1], 'supernovae-st')
+        self.assertNotIn('--repo', verify)
+        self.assertEqual(verify[verify.index('--cert-identity') + 1],
+                         f'https://github.com/{WORKFLOW}@refs/tags/{TAG}')
+
+    def test_release_after_the_move_verifies_against_the_new_signer_only(self):
+        tag = 'v0.124.5'
+        self.binary = self.binary.replace(b'0.116.2', tag[1:].encode())
+        self.asset = f'nika-linux-x64-{tag[1:]}.tar.gz'
+        self.make_archive()
+        self.data['release']['tagName'] = tag
+        self.data['sourceRef'] = f'refs/tags/{tag}'
+        self.data['lookup'] = NEW_LOOKUP
+        self.data['workflow'] = f'{REPO}/.github/workflows/release.yml'
+        result = self.run_install()
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        verify = next(c for c in self.calls() if c[1:3] == ['attestation', 'verify'])
+        self.assertEqual(verify[verify.index('--repo') + 1], REPO)
+        self.assertNotIn('--owner', verify)
+        # The same release attested under the previous name is refused.
+        shutil.rmtree(self.dest)
+        self.log.unlink()
+        self.data['workflow'] = WORKFLOW
+        self.assert_red()
 
     def test_unpublished_unstable_and_invalid_tags_fail(self):
         original = self.data['release'].copy()

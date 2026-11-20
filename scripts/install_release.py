@@ -25,8 +25,13 @@ import tarfile
 import tempfile
 import time
 
-REPO = "supernovae-st/nika"
-WORKFLOW = f"{REPO}/.github/workflows/release.yml"
+REPO = "nika-open/nika"
+# Build provenance names the repository a release was built in. Releases up to
+# v0.124.4 were built as supernovae-st/nika and keep that signer; later ones
+# are signed as REPO. Downloads and metadata always come from REPO.
+LEGACY_SIGNER = "supernovae-st/nika"
+LAST_LEGACY_RELEASE = (0, 124, 4)
+WORKFLOW_PATH = ".github/workflows/release.yml"
 TAG_PATTERN = r"v(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)"
 MAX_ARCHIVE = 128 * 1024 * 1024
 MAX_UNPACKED = 256 * 1024 * 1024
@@ -49,6 +54,23 @@ def stable_tag(tag: str) -> str:
     if not isinstance(tag, str) or not re.fullmatch(TAG_PATTERN, tag):
         raise ValueError("expected an exact stable vMAJOR.MINOR.PATCH release tag")
     return tag
+
+
+def signer(tag: str) -> str:
+    """The repository identity this tag's build provenance was signed under."""
+    version = tuple(int(part) for part in stable_tag(tag)[1:].split("."))
+    return LEGACY_SIGNER if version <= LAST_LEGACY_RELEASE else REPO
+
+
+def attestation_lookup(tag: str) -> list[str]:
+    """Where gh finds this tag's attestations.
+
+    Since the move, GitHub serves the attestations of releases built as
+    LEGACY_SIGNER only through that signer's organization: the repository
+    lookup answers 404 under either name.
+    """
+    repo = signer(tag)
+    return ["--owner", repo.split("/")[0]] if repo == LEGACY_SIGNER else ["--repo", repo]
 
 
 def release_metadata(requested: str | None, target: str) -> tuple[str, dict]:
@@ -125,8 +147,9 @@ def verify(archive: Path, sums: Path, tag: str, commit: str) -> None:
         digest = hashlib.file_digest(source, "sha256").hexdigest()
     if digest != matches[0]:
         raise ValueError("published SHA256SUMS checksum mismatch")
-    command(["gh", "attestation", "verify", str(archive), "--repo", REPO,
-             "--cert-identity", f"https://github.com/{WORKFLOW}@refs/tags/{tag}",
+    repo = signer(tag)
+    command(["gh", "attestation", "verify", str(archive), *attestation_lookup(tag),
+             "--cert-identity", f"https://github.com/{repo}/{WORKFLOW_PATH}@refs/tags/{tag}",
              "--source-ref", f"refs/tags/{tag}", "--source-digest", commit,
              "--predicate-type", "https://slsa.dev/provenance/v1",
              "--deny-self-hosted-runners"], timeout=90)

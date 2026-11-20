@@ -296,7 +296,7 @@ patterns:
 - glob: "**.mdx"
   class: authored
   match_count: 299
-  aggregate_sha256: f50f594e80c544d725432bca54587ddd24c906611eab8090051028d4cb7645e7
+  aggregate_sha256: 7f126ba7f6a4b4c26ce16cb1916de6dd7245ba86beb39f962df1ba8325962959
   evidence: "hand-written MDX page (frontmatter + prose · no generation marker · volatile counts import the generated snippets per AGENTS.md rule 1)"
 - glob: "videos/**"
   class: authored
@@ -325,7 +325,7 @@ patterns:
 - glob: "**"
   class: authored
   match_count: 47
-  aggregate_sha256: 1a73d629d0fef7647e00b3250168c83aca685990af69a3f4af8af8fe85ce6ec3
+  aggregate_sha256: 922f7b96374ebf103646959b6b5c25247a1969f29bd5ea138a4888df31431796
   evidence: "no generation marker or known role found"
   note: "unverified-default"
 unverified:

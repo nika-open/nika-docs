@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "owner": "supernovae-st/nika-docs",
+  "owner": "nika-open/nika-docs",
   "legacyGuides": {
     "/docs": "reference/documentation",
     "/documentation": "reference/documentation",

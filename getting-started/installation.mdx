@@ -27,13 +27,13 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
     macOS and Linux:
 
     ```bash
-    brew install supernovae-st/tap/nika
+    brew install nika-open/tap/nika
     nika --version
     ```
 
     Recent Homebrew versions gate third-party taps behind a trust prompt.
     If the install reports the tap as untrusted, run
-    `brew trust supernovae-st/tap` once and retry.
+    `brew trust nika-open/tap` once and retry.
   </Tab>
 
   <Tab title="Install script">
@@ -56,14 +56,14 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
     (x64, arm64).
 
     ```bash
-    npm install -g @supernovae-st/nika
+    npm install -g @nika-open/nika
     nika --version
     ```
 
     One package gives you the `nika` command and the
     [TypeScript SDK](/sdk/overview). The verified engine for your platform
     arrives as an optional dependency, so keep optional dependencies enabled.
-    Installed per project instead (`npm install @supernovae-st/nika`), the
+    Installed per project instead (`npm install @nika-open/nika`), the
     command is `./node_modules/.bin/nika`, or `npm exec --no -- nika`.
 
     <Warning>
@@ -78,13 +78,17 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
     entrypoint:
 
     ```bash
-    docker run --rm ghcr.io/supernovae-st/nika:0.124.3 --version
-    docker run --rm -v "$PWD:/work" -w /work ghcr.io/supernovae-st/nika:0.124.3 check flow.nika
-    docker run -i --rm ghcr.io/supernovae-st/nika:0.124.3 mcp
+    docker run --rm ghcr.io/nika-open/nika:0.124.3 --version
+    docker run --rm -v "$PWD:/work" -w /work ghcr.io/nika-open/nika:0.124.3 check flow.nika
+    docker run -i --rm ghcr.io/nika-open/nika:0.124.3 mcp
     ```
 
+    The images of releases up to 0.124.4 are published as
+    `ghcr.io/supernovae-st/nika:<release>`, under the repository's name before
+    it moved to `nika-open`.
+
     The image carries the base shell and coreutils, nothing more; build your
-    own image `FROM ghcr.io/supernovae-st/nika:0.124.3` when a workflow runs
+    own image `FROM ghcr.io/nika-open/nika:0.124.3` when a workflow runs
     heavier tools. It has no bubblewrap, so a workflow that declares
     `permits:` and runs `exec:` refuses to start there (`NIKA-1710`, see
     [Servers and headless Linux](#servers-and-headless-linux)) unless you
@@ -93,7 +97,7 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
 
   <Tab title="cargo binstall">
     ```bash
-    cargo binstall --git https://github.com/supernovae-st/nika nika-cli
+    cargo binstall --git https://github.com/nika-open/nika nika-cli
     nika --version
     ```
 
@@ -104,18 +108,18 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
 
   <Tab title="Nix">
     ```bash
-    nix run github:supernovae-st/nika/v0.124.3 -- --version
-    nix profile install github:supernovae-st/nika/v0.124.3
+    nix run github:nika-open/nika/v0.124.3 -- --version
+    nix profile install github:nika-open/nika/v0.124.3
     ```
 
     Builds the release tag with the repository's `flake.nix`: the first run
-    compiles, and the store caches it. The bare `github:supernovae-st/nika`
+    compiles, and the store caches it. The bare `github:nika-open/nika`
     reference builds the default branch, which can be ahead of the release.
   </Tab>
 
   <Tab title="From source">
     ```bash
-    git clone --branch v0.124.3 https://github.com/supernovae-st/nika.git
+    git clone --branch v0.124.3 https://github.com/nika-open/nika.git
     cd nika
     cargo install --locked --path crates/nika-cli
     nika --version
@@ -247,12 +251,13 @@ and `nika trace verify` reports them `UNSEALED`.
 | macOS Intel | `nika-macos-x64-<release>.tar.gz` | shipped |
 | Linux x86_64 | `nika-linux-x64-<release>.tar.gz` | shipped |
 | Linux aarch64 | `nika-linux-arm64-<release>.tar.gz` | shipped |
-| Container (linux/amd64, linux/arm64) | `ghcr.io/supernovae-st/nika:<release>` | shipped |
+| Container (linux/amd64, linux/arm64) | `ghcr.io/nika-open/nika:<release>` | shipped |
 | Windows | none | not supported: use WSL2 |
 | WebAssembly runtime | none | not supported |
 
-Each release also publishes `supernovae-st-nika-check-wasm-<release>.tgz`, a
-WebAssembly build of the static checker only; it does not run workflows.
+Each release also publishes `nika-open-nika-check-wasm-<release>.tgz`
+(`supernovae-st-nika-check-wasm-<release>.tgz` up to 0.124.4), a WebAssembly
+build of the static checker only; it does not run workflows.
 
 ## Servers and headless Linux
 
@@ -298,7 +303,7 @@ shows you chose it. An unknown value refuses to start (`NIKA-1711`).
   build provenance. Download one archive and the checksum file:
 
   ```bash
-  gh release download v0.124.3 --repo supernovae-st/nika \
+  gh release download v0.124.3 --repo nika-open/nika \
     -p 'nika-macos-arm64-0.124.3.tar.gz' -p SHA256SUMS
   ```
 
@@ -309,17 +314,30 @@ shows you chose it. An unknown value refuses to start (`NIKA-1711`).
   shasum -a 256 -c SHA256SUMS --ignore-missing     # Linux: sha256sum -c SHA256SUMS --ignore-missing
 
   # 2 · GitHub build attestation for this exact archive
-  gh attestation verify nika-macos-arm64-0.124.3.tar.gz --repo supernovae-st/nika
+  gh attestation verify nika-macos-arm64-0.124.3.tar.gz --repo nika-open/nika
 
   # 3 · SLSA provenance, verifiable offline
-  gh release download v0.124.3 --repo supernovae-st/nika -p multiple.intoto.jsonl
+  gh release download v0.124.3 --repo nika-open/nika -p multiple.intoto.jsonl
   slsa-verifier verify-artifact nika-macos-arm64-0.124.3.tar.gz \
     --provenance-path multiple.intoto.jsonl \
-    --source-uri github.com/supernovae-st/nika --source-tag v0.124.3
+    --source-uri github.com/nika-open/nika --source-tag v0.124.3
   ```
 
   Replace `macos-arm64` with `macos-x64`, `linux-x64` or `linux-arm64` for
   your platform. `--ignore-missing` checks only the archives you downloaded.
+
+  Releases up to 0.124.4 were built as `supernovae-st/nika`, the repository's
+  name before it moved to `nika-open`. Their provenance keeps that name, and
+  GitHub serves their attestations through the `supernovae-st` organization
+  only, so steps 2 and 3 verify them with:
+
+  ```bash
+  gh attestation verify nika-macos-arm64-<release>.tar.gz \
+    --owner supernovae-st --signer-repo supernovae-st/nika
+  slsa-verifier verify-artifact nika-macos-arm64-<release>.tar.gz \
+    --provenance-path multiple.intoto.jsonl \
+    --source-uri github.com/supernovae-st/nika --source-tag v<release>
+  ```
 </Check>
 
 ## A real answer, later
@@ -395,10 +413,10 @@ Remove the binary the way you installed it:
 ```bash
 brew uninstall nika                          # Homebrew
 rm ~/.nika/bin/nika                          # install script without Homebrew
-npm uninstall -g @supernovae-st/nika         # npm
+npm uninstall -g @nika-open/nika             # npm
 rm ~/.cargo/bin/nika                         # cargo binstall or cargo install
 nix profile remove nika                      # Nix (see `nix profile list` for the name)
-docker image rm ghcr.io/supernovae-st/nika:0.124.3   # container
+docker image rm ghcr.io/nika-open/nika:0.124.3   # container
 ```
 
 Then, if you want no trace left, remove Nika's state:

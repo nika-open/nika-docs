@@ -12,6 +12,7 @@ import sys
 from dataclasses import dataclass
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
+PACKAGE = "@nika-open/nika"
 ACTIVE_ROOTS = ("sdk", "snippets", "reference", "integrations")
 HISTORICAL_ALLOWLIST = (
     "sdk/history/",
@@ -29,7 +30,7 @@ class Rule:
 RULES = (
     Rule("split local class", re.compile(r"\bLocalNika\b")),
     Rule("retired package name", re.compile(r"@supernovae-st/nika-client\b")),
-    Rule("split local import", re.compile(r"@supernovae-st/nika(?:-client)?/local")),
+    Rule("split local import", re.compile(r"@(?:supernovae-st|nika-open)/nika(?:-client)?/local")),
     Rule("buffered terminal shortcut", re.compile(r"\brunToEnd\b")),
     Rule("invented plan method", re.compile(r"\bdryRunPlan\b")),
     Rule("retired jobs namespace", re.compile(r"\bnika\.jobs\b")),
@@ -79,7 +80,7 @@ def findings(root: pathlib.Path = ROOT) -> list[str]:
         text = path.read_text(encoding="utf-8")
         failures.extend(callout_bindings(text, rel))
         for line_number, line in enumerate(text.splitlines(), 1):
-            for pin in re.findall(r"@supernovae-st/nika@([^\s`'\"]*)", line):
+            for pin in re.findall(re.escape(PACKAGE) + r"@([^\s`'\"]*)", line):
                 if version is None or pin != version:
                     failures.append(
                         f"{rel}:{line_number}: SDK package pin {pin!r} does not match "
@@ -132,7 +133,7 @@ def verify_npm(root: pathlib.Path = ROOT) -> list[str]:
     version = source_version(root)
     source = (root / "snippets" / "_sdk-contract.mdx").read_text(encoding="utf-8")
     packages = re.findall(r'^\s*package:\s*"([^"\n]+)"', source, re.MULTILINE)
-    if version is None or packages != ["@supernovae-st/nika"]:
+    if version is None or packages != [PACKAGE]:
         return ["npm verification requires one canonical package and exact version"]
     try:
         result = subprocess.run(

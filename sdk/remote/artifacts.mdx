@@ -20,7 +20,7 @@ an audio file without base64 in `outputs` and without a second store.
 Engine-owned outputs arrive on events and the terminal result:
 
 ```ts
-import { isNikaRunSettledEvent } from '@supernovae-st/nika'
+import { isNikaRunSettledEvent } from '@nika-open/nika'
 
 for await (const event of run.events()) {
   // The settlement frame carries the outputs: `execution.settled` over HTTP.
@@ -64,7 +64,7 @@ import { createWriteStream } from 'node:fs'
 import { readFile, rename } from 'node:fs/promises'
 import { Readable } from 'node:stream'
 import { pipeline } from 'node:stream/promises'
-import { Nika } from '@supernovae-st/nika'
+import { Nika } from '@nika-open/nika'
 
 const token = (await readFile('.nika/serve.token', 'utf8')).trim()
 const nika = new Nika({ url: 'http://127.0.0.1:8787', token, allowInsecureHttp: true })

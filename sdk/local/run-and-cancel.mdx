@@ -10,7 +10,7 @@ import { SDK, LocalContract } from "/snippets/_sdk-contract.mdx"
 ## Admit, observe and settle
 
 ```ts
-import { Nika, isNikaRunSucceeded } from '@supernovae-st/nika'
+import { Nika, isNikaRunSucceeded } from '@nika-open/nika'
 
 const nika = new Nika({ cwd: process.cwd() })
 const run = await nika.run('workflows/release.nika', {
@@ -107,7 +107,7 @@ cancelling a run inside a 20-second `nika:wait` settled after the wait ended.
   ```
 
   ```ts cancel.mts
-  import { Nika } from '@supernovae-st/nika'
+  import { Nika } from '@nika-open/nika'
 
   const nika = new Nika({ cwd: process.cwd() })
   const run = await nika.run('slow.nika')

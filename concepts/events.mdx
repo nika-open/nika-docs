@@ -62,7 +62,7 @@ Each line of `nika run --json` and of the journal is one event. A real
 | `fields` | the kind-specific facts, as key/value pairs |
 
 The type is `nika_event::Event`, in the engine's
-[`nika-event` crate](https://github.com/supernovae-st/nika/tree/v0.123.0/crates/nika-event).
+[`nika-event` crate](https://github.com/nika-open/nika/tree/v0.123.0/crates/nika-event).
 `nika run --json` ends with a `run_settled` frame that is not a journal event:
 it carries the run's `status`, `cause`, `tasks`, `spend`, `outputs` and
 `receipt` together.

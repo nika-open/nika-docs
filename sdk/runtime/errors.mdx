@@ -17,7 +17,7 @@ import { SDK, SourceContract } from "/snippets/_sdk-contract.mdx"
 | Configuration, compatibility, transport or protocol trouble, or a lost observation | the promise **rejects** with a typed `NikaError` | catching the typed error; the run may still be running |
 
 ```ts errors.mts
-import { Nika, NikaOperationError, isNikaRunSucceeded } from '@supernovae-st/nika'
+import { Nika, NikaOperationError, isNikaRunSucceeded } from '@nika-open/nika'
 
 const nika = new Nika({ cwd: process.cwd() })
 

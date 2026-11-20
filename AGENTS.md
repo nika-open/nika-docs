@@ -5,8 +5,8 @@ Vendor-neutral agent entry per the AGENTS.md convention (agents.md).
 ## What this repo is
 
 Public documentation for Nika — the open workflow language for AI
-(spec: `supernovae-st/nika-spec`, Apache-2.0) and its reference engine
-(`supernovae-st/nika`, AGPL-3.0-or-later). Hosted via Mintlify
+(spec: `nika-open/nika-spec`, Apache-2.0) and its reference engine
+(`nika-open/nika`, AGPL-3.0-or-later). Hosted via Mintlify
 (`docs.json` is the nav source of truth).
 
 ## Editing rules

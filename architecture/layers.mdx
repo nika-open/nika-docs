@@ -16,7 +16,7 @@ import. Workflow authors do not pick a layer: this page is the engine's crate
 contract.
 
 <Note>
-  **Canonical source:** [`docs/architecture/crate-layer-registry.md`](https://github.com/supernovae-st/nika/blob/v0.123.0/docs/architecture/crate-layer-registry.md)
+  **Canonical source:** [`docs/architecture/crate-layer-registry.md`](https://github.com/nika-open/nika/blob/v0.123.0/docs/architecture/crate-layer-registry.md)
   and the `[workspace.metadata.diamond]` table of the engine's `Cargo.toml`.
   This page curates the layer model for readers; the engine repository holds
   the manifest next to the enforcement script.
@@ -92,7 +92,7 @@ L2 {STATUS.cratesL2} · L3 {STATUS.cratesL3} · L4 {STATUS.cratesL4}.
 
 An **L5** composition root is reserved but not built: the public executable
 is born `nika` in `nika-cli` (ADR-135). The TypeScript SDK is not a crate: it
-is the npm package `@supernovae-st/nika`, in its own repository.
+is the npm package `@nika-open/nika`, in its own repository.
 
 <Tip>
   `nika-http` is the **L1 HTTP client** (used by `nika:fetch` and catalog

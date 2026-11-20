@@ -16,7 +16,7 @@ references servers by id: Nika handles the rest. Count the live set from
 the engine source — do not freeze a number here.
 
 <Info>
-  **Canonical source:** [`crates/nika-catalog/data/mcp-servers.toml`](https://github.com/supernovae-st/nika/blob/v0.123.0/crates/nika-catalog/data/mcp-servers.toml).
+  **Canonical source:** [`crates/nika-catalog/data/mcp-servers.toml`](https://github.com/nika-open/nika/blob/v0.123.0/crates/nika-catalog/data/mcp-servers.toml).
   Schema: `nika/mcp-servers@1.1`. Build-time invariants (enforced in
   `build.rs`): unique ids, packages+remotes non-empty, known category,
   pricing ∈ {free, freemium, paid}, alias non-collision.
@@ -351,7 +351,7 @@ type.
 
 Every server that needs credentials declares at least one
 `[[servers.env_vars]]` entry with `is_secret = true` or `false`. The
-env var names are visible in [`mcp-servers.toml`](https://github.com/supernovae-st/nika/blob/main/crates/nika-catalog/data/mcp-servers.toml).
+env var names are visible in [`mcp-servers.toml`](https://github.com/nika-open/nika/blob/main/crates/nika-catalog/data/mcp-servers.toml).
 Search for `^name = ` under your chosen server.
 
 <Warning>

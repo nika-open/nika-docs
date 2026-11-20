@@ -8,19 +8,19 @@ icon: "code"
 import { SDK, SourceContract, LocalContract, RemoteContract, SdkDoors } from "/snippets/_sdk-contract.mdx"
 import { ProjectContract } from "/snippets/_project-contract.mdx"
 
-`@supernovae-st/nika` runs `.nika` workflows from your application and proves
+`@nika-open/nika` runs `.nika` workflows from your application and proves
 what they did. Your product owns the request, the interface and the business
 state. The Nika engine owns parsing, admission, execution, policy, events,
 receipts and traces, and the engine comes inside the npm package.
 
 ```sh
-npm install @supernovae-st/nika@0.124.4
+npm install @nika-open/nika@0.124.5
 ```
 
 The first integration is two calls, admit and settle:
 
 ```ts
-import { Nika, isNikaRunSucceeded } from '@supernovae-st/nika'
+import { Nika, isNikaRunSucceeded } from '@nika-open/nika'
 
 const nika = new Nika({ cwd: process.cwd() })
 
@@ -44,7 +44,7 @@ runs this end to end in five minutes.
 
 ```mermaid
 flowchart LR
-  app(["Your app"]) --> sdk["@supernovae-st/nika"]
+  app(["Your app"]) --> sdk["@nika-open/nika"]
   sdk -->|"new Nika({ cwd })"| local["bundled engine<br/>child process"]
   sdk -->|"new Nika({ url, token })"| serve["nika serve --bind<br/>your server"]
   local --> out["typed result + receipt"]

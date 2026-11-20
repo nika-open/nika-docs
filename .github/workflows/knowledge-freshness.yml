@@ -21,7 +21,7 @@ jobs:
           python-version: '3.12'
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
-          repository: supernovae-st/nika-spec
+          repository: nika-open/nika-spec
           ref: main
           fetch-depth: 0
           path: .knowledge-owner

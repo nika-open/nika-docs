@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "documentation-taxonomy",
-  "owner": "supernovae-st/nika-docs",
+  "owner": "nika-open/nika-docs",
   "policy": {
     "exactIdentity": "Explicit ID mapping only; guide links never imply equivalent identity.",
     "marketing": "nika.sh is a presentation source, never the owner of a language contract.",

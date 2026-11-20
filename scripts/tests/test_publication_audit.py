@@ -30,7 +30,7 @@ class PublicationBoundary(unittest.TestCase):
         self.write('docs.json',json.dumps({'navigation':['guides/lab-agents']}))
         self.assertTrue(audit.audit(self.root))
     def test_encoded_private_link_is_detected(self):
-        self.write('introduction.mdx','https://github.com/supernovae-st/nika%2Dlab')
+        self.write('introduction.mdx','https://github.com/nika-open/nika%2Dlab')
         self.assertTrue(audit.audit(self.root))
     def test_json_escaped_private_name_is_detected(self):
         self.write('docs.json',r'{"title":"Nika\u0020Lab"}')

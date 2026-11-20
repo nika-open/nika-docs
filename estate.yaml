@@ -36,7 +36,7 @@ files:
   evidence: "hand-written grouped-bumps policy (comments narrate the nika-spec PR #135 desync lesson)"
 - path: ".github/workflows/gate.yml"
   class: authored
-  sha256: 705df59d91d6b0c92a586e82419c65e6bc09196279851fa06b37d0c8a09aeaee
+  sha256: 3045ee703f7b6276dcd7e5a22cd762513a5abf0105be1f2f1fc7408e73dc6a27
   evidence: "hand-written CI trust model (comments narrate the judge choices — released-binary oracle · wire-asserted counts)"
 - path: ".github/workflows/release-heal.yml"
   class: authored
@@ -49,7 +49,7 @@ files:
   evidence: "hand-pinned Node major for the local mint preview"
 - path: "AGENTS.md"
   class: authored
-  sha256: 56251ac0462dd5341aaf3d7d488100f9e51968b69407d084d540734237bfedaf
+  sha256: 7b3b50fd493d6252e7898c2498a0fcd7221cf802f151c0f3749938e763722867
   evidence: "hand-written agent entry per the AGENTS.md convention · it STATES the projection rules the snippets follow"
 - path: "DEPLOY.md"
   class: authored
@@ -70,7 +70,7 @@ files:
     - "https://www.gnu.org/licenses/agpl-3.0.txt (GNU AGPL-3.0, verbatim)"
 - path: "README.md"
   class: authored
-  sha256: cf61ab1e2caa1b0c8b677ba8d8010c6cb151017d174c107f859480588e175083
+  sha256: 472a5abd5b15d8d6d3ccbfcf0b1576bc395d5f318c5186cd46848c4160c772b4
   evidence: "prose entry surface · no generation marker"
 - path: "SECURITY.md"
   class: authored
@@ -88,7 +88,7 @@ files:
     - "scripts/release_catalog.py"
 - path: "docs.json"
   class: authored
-  sha256: 980716f06d7fcf23346bf2846014f33398f6e26cf40c84aae7579f4544716587
+  sha256: 0b47a92e5e7a076864d50c0349b4eaf3a686328bc956be90b4033adcdd05c376
   evidence: "hand-written Mintlify config (nav + theme + metadata) · no generation marker"
   note: "theme colors follow the nika-spec design-tokens SSOT — advisory parity gate: gate.yml step 'docs.json theme parity vs the design-tokens SSOT (advisory)' (continue-on-error)"
 - path: "global.css"
@@ -201,12 +201,12 @@ files:
   evidence: "hand-written pre-push gate config (mint broken-links · link-audit · teach-parity · oracle-sweep)"
 - path: "reference/error-codes.mdx"
   class: authored
-  sha256: 2e92a55a01757c0f8d12a82a1c781c468d0a4a37730155ec665e06fbecb6de1c
+  sha256: f21bffd7fb7f4c0cb209f827c48fba57f1ddf3c2baadb60aeffbd250b6063f4f
   evidence: "mixed page: authored frontmatter and prose around errors-*:begin/end tables projected from the spec diagnostic registry by showcase-projector.py"
   note: "the errors-categories, errors-codes and errors-namespaces blocks are projected from nika-spec canon/diagnostics/registry.yaml; edit the registry and re-project, never hand-edit those blocks; this repo's gate does not independently re-derive them"
 - path: "reference/mcp-catalog.mdx"
   class: authored
-  sha256: d58fca5c26b2c9d79e57cf9b0f493e134f52d8a888cfdabe7bcf039fff625aba
+  sha256: c322d1d6a903e80f10878ef141b380583b8101a3a5d0dde098253aea936f83c4
   evidence: "hand-written MDX page (frontmatter + prose · no generation marker · volatile counts import the generated snippets per AGENTS.md rule 1)"
   note: "the body carries authored catalog and category counts with a dated snapshot, not an in-repo projection; the engine's served MCP tool-count check does not prove the separate server-catalog cardinality"
 - path: "scripts/count-drift-gate.py"
@@ -216,16 +216,16 @@ files:
 - path: "scripts/estate.py"
   class: pinned-copy
   sha256: fd4aa38f78cfacfa2e003c2d3e1b10e74b4d16d9cb9b11e87acc5a1449d2016e
-  evidence: "the shared estate tool, mirrored byte-for-byte from supernovae-st/nika-estate · editing it here is a lost gesture: change it upstream, bump ESTATE_PIN, re-mirror"
+  evidence: "the shared estate tool, mirrored byte-for-byte from nika-open/nika-estate · editing it here is a lost gesture: change it upstream, bump ESTATE_PIN, re-mirror"
   derivation:
     tool: "curl the tool from nika-estate at the rev named in ESTATE_PIN"
     gate: "the `mirror` job byte-compares scripts/estate.py against nika-estate@ESTATE_PIN and fails the run on any difference"
     inputs:
     - "ESTATE_PIN"
-    - "supernovae-st/nika-estate@<ESTATE_PIN>:scripts/estate.py"
+    - "nika-open/nika-estate@<ESTATE_PIN>:scripts/estate.py"
 - path: "scripts/estate_rules.py"
   class: authored
-  sha256: e374d2b39ed07536b95e15de2fdf940f0d3df18286a3399cb281c540c924a680
+  sha256: dce3a9436e3f21d3585e6fb2becdb50669ea7cec9a764d7935846a25027960d4
   evidence: "hand-written per-repo estate rules (this file) · the tool is shared, these declarations are ours"
 - path: "scripts/link-audit.py"
   class: authored
@@ -241,7 +241,7 @@ files:
   evidence: "hand-written gate · SPDX header + the copy-paste-invariant design prose"
 - path: "scripts/sdk_contract_gate.py"
   class: authored
-  sha256: af8577c6cfd390ce5842b352c65310313c3a21f8d8d923a3ac79e1d83f8dcbd0
+  sha256: 479b0c8bdb5a9526605a3633cec3ba8b960aab72ae6d8813985717e2f202cd5d
   evidence: "authored source ratchet for retired SDK contracts, explicit shared-callout bindings and installation pins against the canonical SDK source version"
 - path: "scripts/teach-parity.py"
   class: authored
@@ -253,30 +253,30 @@ files:
   evidence: "authored isolated-tool regression that executes the actual push-hook command and preserves parser success, failure and explicitly reported absence; run by gate.yml"
 - path: "scripts/tests/test_sdk_contract_gate.py"
   class: authored
-  sha256: 64a4d8804a30dd681371c54e5565feea5a29b58b0b8c0a61f2e473a7e6b02bfe
+  sha256: 248d516913be0aeaf8dbd25b4e54d2f6512ed5d5777fafa02e1e584d8362861b
   evidence: "authored offline positive and planted-negative regressions for the SDK source ratchet, run by gate.yml"
 - path: "snippets/_canon.mdx"
   class: generated
   sha256: 78526d6f0abffd3c8252d876a3dfa798cca416c319dcad4a9e66f2b024e38514
   evidence: "in-file marker: '{/* _canon.mdx — AUTO-GENERATED by scripts/canon-projectors.py (nika-spec repo) from canon.yaml'"
   derivation:
-    tool: "python3 scripts/canon-projectors.py --write (runs in the supernovae-st/nika-spec checkout — the tool does NOT live in this repo)"
+    tool: "python3 scripts/canon-projectors.py --write (runs in the nika-open/nika-spec checkout — the tool does NOT live in this repo)"
     gate: "EXTERNAL — canon-projectors.py --check is wired into the SuperNovae run-all audit (its own marker's claim); no step in .github/workflows/gate.yml re-proves this file"
     inputs:
-    - "supernovae-st/nika-spec canon.yaml (the Nika language single source of truth)"
+    - "nika-open/nika-spec canon.yaml (the Nika language single source of truth)"
 - path: "snippets/_ecosystem.mdx"
   class: authored
-  sha256: db2e52328e18367033f6acbaece36fb49b27510c6dcc14a6a6a4a9c02dfe0349
+  sha256: edf08caf29386aeb11dd5ca528fac829b9d6cc41f0f0cb80416debd753212298
   evidence: "its own header: 'Edit HERE, never per-page' — the one hand-edited snippet (a single-source link mesh, not a projection)"
 - path: "snippets/_showcase.mdx"
   class: generated
   sha256: 398fc3b8b1d46df303afb530402f00d202193f3190794c0ebe62e3e3f2cf891d
   evidence: "in-file marker: '{/* _showcase.mdx — AUTO-GENERATED by scripts/showcase-projector.py (nika-spec repo) from examples/showcase/'"
   derivation:
-    tool: "python3 scripts/showcase-projector.py --write (runs in the supernovae-st/nika-spec checkout — the tool does NOT live in this repo)"
+    tool: "python3 scripts/showcase-projector.py --write (runs in the nika-open/nika-spec checkout — the tool does NOT live in this repo)"
     gate: "NONE in this repo — no gate.yml step re-derives the showcase counts; sync rides the spec-side projector runs"
     inputs:
-    - "supernovae-st/nika-spec examples/showcase/ (tier counts derive · never hand-typed)"
+    - "nika-open/nika-spec examples/showcase/ (tier counts derive · never hand-typed)"
 - path: "snippets/_status-snapshot.mdx"
   class: authored
   sha256: db00f335f926caf5278d9b21d406f0fa294dbb7d67ff343adfdb53f5f94a1bae
@@ -290,13 +290,13 @@ files:
     tool: "python3 scripts/release_catalog.py --refresh"
     gate: "gate.yml live --refresh --check parity"
     inputs:
-    - "https://api.github.com/repos/supernovae-st/nika/releases"
+    - "https://api.github.com/repos/nika-open/nika/releases"
     - "scripts/release_catalog.py"
 patterns:
 - glob: "**.mdx"
   class: authored
   match_count: 299
-  aggregate_sha256: 20b4b66ea1129c55becf91484a27a0896255bd030c170195cf36f406c54e0d92
+  aggregate_sha256: be2348b72c6e9f9f2ae1b46778f6f8aa8c32018957710abe5448042c54dd785b
   evidence: "hand-written MDX page (frontmatter + prose · no generation marker · volatile counts import the generated snippets per AGENTS.md rule 1)"
 - glob: "videos/**"
   class: authored
@@ -325,7 +325,7 @@ patterns:
 - glob: "**"
   class: authored
   match_count: 47
-  aggregate_sha256: ceecb95c59ba2d9b68493562bfeb4f420ede18eef48b0a73df2e74da48f13445
+  aggregate_sha256: 1a73d629d0fef7647e00b3250168c83aca685990af69a3f4af8af8fe85ce6ec3
   evidence: "no generation marker or known role found"
   note: "unverified-default"
 unverified:

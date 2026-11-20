@@ -3,6 +3,19 @@
   "repository": "nika-open/nika",
   "releases": [
     {
+      "tag": "v0.124.5",
+      "name": "v0.124.5",
+      "publishedAt": "2026-11-20T11:15:41Z",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.124.5",
+      "assetCount": 8,
+      "highlights": [
+        "Nika moved to the nika-open organization.",
+        "nika doctor names the package an npm copy was installed as.",
+        "quinn-proto and quinn-udp are past three QUIC advisories."
+      ],
+      "notesSha256": "dfeef47a968e93c70038d936304009762bff04ec0a389540fb46a9b9c7b07d08"
+    },
+    {
       "tag": "v0.124.4",
       "name": "v0.124.4",
       "publishedAt": "2026-11-12T09:58:13Z",

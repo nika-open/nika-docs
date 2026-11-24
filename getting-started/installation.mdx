@@ -78,9 +78,9 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
     entrypoint:
 
     ```bash
-    docker run --rm ghcr.io/nika-open/nika:0.124.3 --version
-    docker run --rm -v "$PWD:/work" -w /work ghcr.io/nika-open/nika:0.124.3 check flow.nika
-    docker run -i --rm ghcr.io/nika-open/nika:0.124.3 mcp
+    docker run --rm ghcr.io/nika-open/nika:0.125.0 --version
+    docker run --rm -v "$PWD:/work" -w /work ghcr.io/nika-open/nika:0.125.0 check flow.nika
+    docker run -i --rm ghcr.io/nika-open/nika:0.125.0 mcp
     ```
 
     The images of releases up to 0.124.4 are published as
@@ -88,9 +88,9 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
     it moved to `nika-open`.
 
     The image carries the base shell and coreutils, nothing more; build your
-    own image `FROM ghcr.io/nika-open/nika:0.124.3` when a workflow runs
+    own image `FROM ghcr.io/nika-open/nika:0.125.0` when a workflow runs
     heavier tools. It has no bubblewrap, so a workflow that declares
-    `permits:` and runs `exec:` refuses to start there (`NIKA-1710`, see
+    `permits:` and runs `exec:`, or calls an MCP server, refuses to start there (`NIKA-1710`, see
     [Servers and headless Linux](#servers-and-headless-linux)) unless you
     install bubblewrap in your image or set the attested `NIKA_SANDBOX=off`.
   </Tab>
@@ -281,6 +281,10 @@ the workflow:
 - **A `permits:` block and `exec:` tasks.** The run refuses to start
   (`NIKA-1710`). A declared boundary the host cannot enforce would be a broken
   promise, so the engine fails closed instead of running unconfined.
+- **An MCP server.** Since 0.125 a server is held to the same rule, because it
+  always runs inside a boundary (the project tree and its network arm): it is
+  refused with `NIKA-1710` and no process starts, in `nika mcp approve` and in
+  `nika run`, where the call fails and is not retried.
 
 The posture is one setting, read once at launch:
 
@@ -292,7 +296,9 @@ NIKA_SANDBOX=off      # proceed unconfined · attested
 
 `off` is a waiver, not a silent escape: the run's journal records
 `sandbox_policy` and `sandbox_waived` on its opening frame, so a sealed trace
-shows you chose it. An unknown value refuses to start (`NIKA-1711`).
+shows you chose it. Under `off` an MCP server starts unconfined and its note
+names the waiver. An unknown value refuses to start (`NIKA-1711`), and since
+0.125 it refuses every MCP server spawn too, on a host with a backend as well.
 `nika doctor` shows the backend in its `sandbox` row, and
 `nika explain NIKA-1710` teaches the refusal with the fix for each OS.
 
@@ -416,7 +422,7 @@ rm ~/.nika/bin/nika                          # install script without Homebrew
 npm uninstall -g @nika-open/nika             # npm
 rm ~/.cargo/bin/nika                         # cargo binstall or cargo install
 nix profile remove nika                      # Nix (see `nix profile list` for the name)
-docker image rm ghcr.io/nika-open/nika:0.124.3   # container
+docker image rm ghcr.io/nika-open/nika:0.125.0   # container
 ```
 
 Then, if you want no trace left, remove Nika's state:

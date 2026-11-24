@@ -3,6 +3,19 @@
   "repository": "nika-open/nika",
   "releases": [
     {
+      "tag": "v0.125.0",
+      "name": "v0.125.0",
+      "publishedAt": "2026-11-24T16:24:20Z",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.125.0",
+      "assetCount": 8,
+      "highlights": [
+        "nika check names a guard that untrusted content steers.",
+        "The Claude Code plugin makes, runs and follows a workflow without leaving the conversation",
+        "nika serve shares its workers between owners and takes its limits as flags."
+      ],
+      "notesSha256": "a8e18c57ba82def6fc5d2a6c35eedc978fae3badc546b387c1c40832b0976c39"
+    },
+    {
       "tag": "v0.124.5",
       "name": "v0.124.5",
       "publishedAt": "2026-11-20T11:15:41Z",

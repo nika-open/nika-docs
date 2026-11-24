@@ -253,7 +253,7 @@ whatever the model decides:
 | Permit re-gate | a tainted argument that resolves outside `permits:` at run time | `NIKA-SEC-004` |
 | SSRF floor | a fetch into loopback, private, link-local or metadata space | `NIKA-SEC-005` |
 | Secret flow | a secret reaching a sink with no matching `egress:` entry | `NIKA-SEC-006` |
-| Lethal trifecta | a boundary that grants private reads, untrusted ingress (a fetch, an MCP tool, an agent that can reach one) and external egress, where the untrusted content reaches the egress (directly, through a file a builtin reads back, or through a child workflow) and no blocking `nika:prompt` gate dominates it | `NIKA-SEC-009` |
+| Lethal trifecta | a boundary that grants private reads, untrusted ingress (a fetch, an MCP tool, an agent that can reach one) and external egress, where the untrusted content reaches the egress (directly, through a file a builtin reads back, or through a child workflow) and no blocking `nika:prompt` gate dominates it. A `confirm` gate counts by its position. Since 0.125 a `choice` or `input` gate counts only when the egress task's `when:` tests its answer, and a gate with `on_error:` or `for_each:` counts before no effect | `NIKA-SEC-009` |
 | Affirmative consent | a confirm gate (`nika:prompt`) in front of an egress, a child workflow call included, with a route that a « no » answer does not close | `NIKA-SEC-014` |
 | Order law | fetched or notified content reaching any `exec:` task | `NIKA-SEC-015` |
 | Recursion bound | a self-launching workflow, or nested runs past the depth limit | `NIKA-SEC-003` |

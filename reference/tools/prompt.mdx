@@ -62,13 +62,6 @@ changing the workflow's human gate; for example, the reference engine accepts
 `nika run workflow.nika --answer approval=false` when the prompt task is named
 `approval`. See the [human-gated shipping template](https://github.com/nika-open/nika-spec/blob/5cd95cd25c0ff453be266794a03666e5e3f2d7a8/templates/human-gated-ship.nika).
 
-As the human gate of the lethal-trifecta check (`NIKA-SEC-009`), a `confirm`
-prompt counts by its position. Since 0.125 a `choice` or `input` prompt counts
-in front of an egress task only when that task's `when:` tests its answer (an
-`input` prompt also counts in front of a `nika:` tool call that sends only the
-typed answer), and a prompt with `on_error:` or `for_each:` counts in front of
-no effect. `nika explain NIKA-SEC-009` states the whole rule.
-
 ## Related concepts
 
 <CardGroup cols={2}>

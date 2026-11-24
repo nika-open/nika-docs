@@ -62,7 +62,10 @@ What it does not do:
   has no call for the job list, a retry, the attempts, the occupancy or the
   schedule list, removal and trigger: call them over HTTP. The published 0.124
   SDK keeps working against a 0.125.0 server. A job started again keeps its
-  id; its `execution_id` and `trace_id` change.
+  id; its `execution_id` and `trace_id` change, and an SDK call still
+  following that job stops with `NikaProtocolError` (the durable execution
+  identity changed). Read its attempts over HTTP
+  (`GET /v1/jobs/{id}/attempts`).
 - **No way back without a copy.** 0.125 moves the job store to format 4 the
   first time a resident holds the state root, and a 0.124.x resident refuses
   a format-4 store. Copy the state root (`.nika/serve` by default) before

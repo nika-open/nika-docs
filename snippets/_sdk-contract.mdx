@@ -43,16 +43,19 @@ export const RemoteContract = ({ sdk }) => (
     {" "}<code>workflows/release.nika</code> (its path from the project root) goes
     directly to the server and needs no local engine or file. An explicit local
     path such as <code>./release.nika</code> needs a compatible local engine to
-    capture an immutable snapshot. The released OpenAPI of
-    {" "}<code>nika serve</code> {sdk.sourceVersion} covers jobs, SSE events,
-    cancellation, trace verification, the artifacts a settled job's sealed
-    journal records (behind <code>run.artifacts()</code>), workflow listing,
-    schedule read and write, stateless authoring
-    (<code>POST /v1/compile</code>, behind <code>compile()</code>) and what a
-    workflow's declared ACP route offers (behind <code>accessOffer()</code>). It has no
-    {" "}<code>POST /v1/run</code>, job-list, or schedule list, delete, trigger
-    or backfill route. The server owns its engine version; check its
-    compatibility separately from the bundled local engine.
+    capture an immutable snapshot. This SDK release drives the routes of
+    {" "}<code>nika serve</code> for jobs, SSE events, cancellation, trace
+    verification, the artifacts a settled job's sealed journal records (behind
+    {" "}<code>run.artifacts()</code>), workflow listing, schedule read and
+    write, stateless authoring (<code>POST /v1/compile</code>, behind
+    {" "}<code>compile()</code>) and what a workflow's declared ACP route offers
+    (behind <code>accessOffer()</code>). <code>nika serve</code> 0.125 also
+    answers routes this SDK release does not wrap: the job list, a job's retry
+    and attempts, the occupancy, and schedule list, removal and trigger; call
+    them over HTTP (<a href="/sdk/operations/server-surfaces">Server surfaces</a>).
+    The server has no <code>POST /v1/run</code> or schedule backfill route. It
+    owns its engine version; check its compatibility separately from the
+    bundled local engine.
   </Info>
 )
 

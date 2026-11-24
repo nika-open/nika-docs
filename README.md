@@ -41,9 +41,12 @@ tamper-evident record you can verify. No Nika account and no hosted service.
 |:---:|:---:|:---:|:---:|
 | Describe the job; Nika writes a `.nika` file | `nika check` audits it before any model is called | `nika run` with the model you choose | `nika trace verify` checks the run's record |
 
-0.124 is the current release line. Work stays focused on maintenance,
+0.125 is the current release line. Work stays focused on maintenance,
 security and the media capabilities workflows need; native video is planned
-for 0.125.
+for a later release. 0.125 puts `nika serve` behind an application: jobs
+carry an owner and labels, can be listed, share the workers fairly and can
+run again as a new attempt
+([Resident server](https://docs.nika.sh/sdk/operations/resident-server)).
 
 Start with the [offline report](https://docs.nika.sh/introduction): actual
 calculation and a Markdown file, without an API key or a mock model.
@@ -376,7 +379,7 @@ response times.
 | 🦋 | [nika](https://github.com/nika-open/nika) | The engine and CLI: write, check, run and verify AI workflows |
 | 📖 | **[nika-docs](https://github.com/nika-open/nika-docs)** | **The documentation, live at [docs.nika.sh](https://docs.nika.sh)** |
 | 📜 | [nika-spec](https://github.com/nika-open/nika-spec) | The language specification and the suite that proves an engine follows it |
-| 🧩 | [nika-vscode](https://github.com/nika-open/nika-vscode) | The editor extension, frozen at 0.120 and not qualified with 0.124: use `nika lsp` and the JSON Schema |
+| 🧩 | [nika-vscode](https://github.com/nika-open/nika-vscode) | The editor extension, frozen at 0.120 and not qualified with 0.125: use `nika lsp` and the JSON Schema |
 | 🟦 | [nika-client](https://github.com/nika-open/nika-client) | Run and verify workflows from TypeScript |
 | ✅ | [nika-action](https://github.com/nika-open/nika-action) | A GitHub Action that posts a `nika check` verdict on your pull requests |
 | 🚀 | [nika-actions-starter](https://github.com/nika-open/nika-actions-starter) | A ready template: workflows, editor setup and CI from the first push |

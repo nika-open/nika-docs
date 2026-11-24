@@ -71,8 +71,10 @@ call (`NIKA_LLAMACPP_BASE_URL=http://127.0.0.1:8712`, then
 The pinned OpenAPI exposes cancellation as an action; the runtime's
 settlement determines the result. A settled job's artifacts, listed from its
 sealed journal, download over the same door
-([Outputs and artifacts](/sdk/remote/artifacts)). Job listing and
-`POST /v1/run` remain absent.
+([Outputs and artifacts](/sdk/remote/artifacts)). From 0.125 the door also
+lists jobs, starts an interrupted or failed job again, and lists, removes and
+triggers schedules ([Server surfaces](/sdk/operations/server-surfaces)).
+`POST /v1/run` remains absent.
 
 ## Architecture view
 

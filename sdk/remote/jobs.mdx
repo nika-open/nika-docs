@@ -37,8 +37,10 @@ their request envelopes do not exist. A snapshot of a local file carries no
 pin either: `access` beside one is refused (`capability: 'snapshotAccess'`).
 A fresh `randomUUID()` per retry defeats the contract: the key is what lets
 the server return the original job instead of starting a second one. Keys
-cover the whole `--state-root` and do not expire, so never reuse one for
-another operation.
+cover the whole `--state-root` and last as long as the server keeps the job,
+so never reuse one for another operation. A server started with
+`--job-retention` forgets a settled job's key with the job: the same key then
+starts a new job.
 
 ## Spend on the server
 
@@ -113,8 +115,17 @@ failure that wins the race is preserved; an execution that has not settled
 within the server's 5-second grace ends `interrupted`, with no settlement. A
 job cancelled before its execution started settles `cancelled` on the reply
 itself (`200`), and a job that already ended answers `accepted: false`,
-`status: 'already_settled'`. The API has no job-list route, so application
-indexes remain application-owned.
+`status: 'already_settled'`.
+
+This SDK release neither lists jobs nor sends `owner` or `labels`, so keep
+your own index of the jobs your code submits. A 0.125 server lists jobs over
+HTTP (`GET /v1/jobs`, [Server surfaces](/sdk/operations/server-surfaces)).
+
+A server started with `--retry-interrupted` can start a job again after its
+resident was killed or stopped past its grace. The job keeps its id: it goes
+back to `queued`, then `running`, and the new attempt has its own
+`execution_id` and `trace_id`. Keep awaiting `run.result()` for the real end
+([Resident server](/sdk/operations/resident-server#when-a-job-loses-its-resident)).
 
 ## Download what it produced
 

@@ -93,6 +93,16 @@ reads `{ kind: 'paused', pauseUntil, reason }` once paused.
   `receipt.origin` names the silence it answers for: `missed_first`, the first
   slot that passed unfired, and `missed_count`.
 
+## List, remove and run by hand
+
+A 0.125 server also lists its schedules (`GET /v1/schedules`), removes one
+under `If-Match` (`DELETE /v1/schedules/{id}`) and runs one now, once, without
+moving its cadence (`POST /v1/schedules/{id}/trigger`). A schedule may state
+an `owner` and `labels` that every job it starts carries. This SDK release
+does not wrap those routes or send those members: call them over HTTP, as the
+[server runbook](/sdk/operations/server-runbook#manage-schedules-over-http)
+shows. `/health` lists `scheduleManage` on such a server.
+
 ## `schedule()` or `arm:`
 
 | | `schedule()` on `nika serve` | `arm:` in `nika.yaml` |

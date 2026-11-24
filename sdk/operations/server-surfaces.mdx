@@ -19,7 +19,7 @@ Three surfaces sound like servers but accept different clients.
 <ProjectContract />
 <RemoteContract sdk={SDK} />
 
-## Released OpenAPI routes (0.124.3, default server)
+## Released OpenAPI routes (0.125.0, default server)
 
 | Method and path | Contract |
 |---|---|
@@ -27,31 +27,59 @@ Three surfaces sound like servers but accept different clients.
 | `GET /v1/openapi.json` | authenticated contract document |
 | `POST /v1/check` | compact admission acknowledgement or typed workflow refusal |
 | `POST /v1/compile` | stateless authoring: a candidate and a source-only check preview; creates no job and writes no file. Deterministic by default; on a server started with `--authoring-model`, a caller may opt in to one provider round (`/health` lists `compileNativeV2`, and `GET /v1/openapi.json` then also describes `CompileRequestV2`) |
-| `POST /v1/jobs` | idempotent admission |
+| `POST /v1/jobs` | idempotent admission; the by-name form also takes `owner`, `labels` and `retry` |
+| `GET /v1/jobs` | one page of jobs, newest admission first, filtered by owner, status, workflow, origin, label and admission instant |
 | `GET /v1/jobs/{id}` | durable job projection |
 | `GET /v1/jobs/{id}/status` | current status |
 | `GET /v1/jobs/{id}/events` | SSE event stream |
 | `POST /v1/jobs/{id}/cancel` | cancellation action; 202 remains pending, 200 returns a completed observation |
-| `GET /v1/jobs/{id}/trace/verify` | the CLI verifier's verdict on the journal the server wrote for that job |
+| `POST /v1/jobs/{id}/retry` | start a job that ended `interrupted` or `failed` again, as a new attempt of the same job |
+| `GET /v1/jobs/{id}/attempts` | the job's attempts, oldest first, and where it stands about being started again |
+| `GET /v1/jobs/{id}/trace/verify` | the CLI verifier's verdict on the journal the server wrote for that job; `?attempt=N` verifies one attempt's own journal |
 | `GET /v1/jobs/{id}/artifacts` | a settled job's artifact manifest, read from its sealed journal and bound to its receipt |
 | `GET /v1/jobs/{id}/artifacts/{name}` | one artifact's bytes, streamed and checked against the size and SHA-256 its journal records |
+| `GET /v1/occupancy` | the jobs running and waiting against the limits, the busiest owners, and the calls in flight on each capped provider |
 | `GET /v1/workflows` | contained names |
 | `GET /v1/workflows/{name}` | path-free metadata |
 | `GET /v1/access-offers/{name}` | what the sessions of that workflow's own declared ACP route offer now, read without a prompt (`/health` lists `accessSessionOffer`) |
+| `GET /v1/schedules` | every schedule: the ones this door created, then the project's beats, each with its next slot |
 | `GET /v1/schedules/{id}` | schedule status |
-| `PUT /v1/schedules/{id}` | CAS-backed schedule apply |
+| `PUT /v1/schedules/{id}` | CAS-backed schedule apply; a schedule may state `owner` and `labels` |
+| `DELETE /v1/schedules/{id}` | remove a schedule this door created, under `If-Match` |
+| `POST /v1/schedules/{id}/trigger` | admit one job now under what the schedule declares; the cadence does not move |
 
-The contract has no `POST /v1/run`, job-list, schedule-list, schedule-delete,
-trigger or backfill routes, and no artifact upload or deletion.
+The contract has no `POST /v1/run` or schedule backfill route, and no artifact
+upload or deletion.
 `GET /v1/jobs/{id}/trace/verify` answers in the CLI's words, lower case: `ok`
 (intact, but unsigned or sealed with a key the server does not weigh: `reason`
 reads `unsealed` or `unattributable`), `sealed`, `anchored` and `replayed`
 hold; `incomplete`, `tampered` and `broken` do not; `unavailable` means the
-server holds no journal for that job. Both artifact routes answer only for a
-settled job whose journal verifies sealed:
+server holds no journal for that job. Without a query it verifies the latest
+attempt; `?attempt=N` verifies attempt `N` (`400 invalid_trace_query` for any
+other query, `404 attempt_not_found` for an attempt the job has not taken).
+Both artifact routes answer only for a settled job whose journal verifies
+sealed, and serve its latest attempt:
 [Outputs and artifacts](/sdk/remote/artifacts) covers the client side, and the
 [server runbook](/sdk/operations/server-runbook#artifact-downloads) what the
 door exposes.
+
+## What `/health` lists
+
+`supportedCapabilities` names each optional surface the server really serves.
+Require the token before you send a member or call a route: a server without
+`jobAttribution` or `jobRetry` refuses `owner`, `labels` or `retry` as an
+unknown field.
+
+| Capability | What it covers |
+|---|---|
+| `jobAttribution` | `owner` and `labels` on the by-name form of `POST /v1/jobs` |
+| `jobList` | `GET /v1/jobs` |
+| `occupancy` | `GET /v1/occupancy`, the fair queue between owners and `429 owner_queue_full` at an owner's bound |
+| `scheduleManage` | `GET /v1/schedules`, `DELETE /v1/schedules/{id}`, `POST /v1/schedules/{id}/trigger`, and `owner` and `labels` on a schedule. Listed beside `schedule` |
+| `jobRetry` | `retry` on `POST /v1/jobs`, `POST /v1/jobs/{id}/retry`, `GET /v1/jobs/{id}/attempts` and `trace/verify?attempt=N` |
+
+`storeFormatVersion.jobs` reads `4`: the job store format 0.125 writes
+([Server runbook](/sdk/operations/server-runbook#upgrade-and-keep-a-way-back)).
 
 ```sh
 nika serve --bind 127.0.0.1:18765 \
@@ -64,6 +92,30 @@ Useful flags beyond these three: `--state-root <dir>` (job state, default
 1 USD), `--allow-remote` (acknowledge a non-loopback `--bind`; TLS belongs to
 a reverse proxy) and `--authoring-model <provider/name>` (seat provider
 authoring for `POST /v1/compile`). `nika serve --help` lists every flag.
+
+The job flags bound what the resident keeps and runs. They belong to the
+persistent resident and are refused beside `--once` or `--dry`:
+
+| Flag | Default | What it bounds |
+|---|---|---|
+| `--job-retention <DURATION>` | keep every job | forget a `succeeded` job once it has been settled that long |
+| `--job-retention-unsuccessful <DURATION>` | follows `--job-retention` | the same for `failed`, `cancelled` and `interrupted` jobs |
+| `--max-jobs <N>` | 10000 | jobs the store keeps; past it `507 job_capacity` |
+| `--max-concurrent-jobs <N>` | 4, at most 256 | jobs running at once |
+| `--queue-capacity <N>` | 64 | jobs waiting, all owners together; past it `503 queue_full` |
+| `--max-queued-per-owner <N>` | none | jobs one owner has waiting; past it `429 owner_queue_full` |
+| `--max-concurrent-per-owner <N>` | none | jobs one owner runs at once; its other jobs wait |
+| `--provider-concurrency <PROVIDER=N>` | none | model calls in flight on one provider, all jobs together; repeat per provider |
+| `--shutdown-grace <DURATION>` | `30s` | how long a stop waits for running and queued jobs |
+| `--retry-interrupted <off\|restart\|resume>` | `off` | what becomes of a job whose run lost its resident |
+| `--retry-max-attempts <N>` | 3, at most 16 | attempts one job may take, the first included |
+
+A duration is a whole number and one unit: `s`, `m`, `h` or `d`. A retention
+window is at least one minute, a grace at least one second.
+[Resident server](/sdk/operations/resident-server#jobs-an-application-finds-again)
+explains what each one does, and the
+[server runbook](/sdk/operations/server-runbook#keep-the-job-store-bounded)
+how to size them.
 
 The standalone engine also supports operator
 [standing cost rules](/sdk/operations/standing-cost-policy):

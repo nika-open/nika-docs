@@ -1,6 +1,6 @@
 ---
 title: "Server runbook"
-description: "Boot, supervise, probe, deploy and investigate the stable resident firer."
+description: "Boot, supervise, probe, deploy and investigate the stable resident, its job store and its retries."
 sidebarTitle: "Server runbook"
 icon: "clipboard-check"
 ---
@@ -56,6 +56,11 @@ Pin `WorkingDirectory` and `ExecStart`. Provider keys stay in the protected
 environment file. The project source and `.nika/` volume need only the access
 the workflows and evidence policy require.
 
+A resident started with `--bind` waits `--shutdown-grace` (30 seconds by
+default) for its running and queued jobs when it stops. Give systemd
+`TimeoutStopSec` of the grace plus 15 seconds, so 45 by default, and raise
+both together.
+
 For unattended jobs on an API route the catalog cannot price, configure
 [standing cost rules](/sdk/operations/standing-cost-policy) in the service's
 startup command. Keep the project `.nika/` durable: its admission-window
@@ -72,7 +77,8 @@ frequency; a USD ceiling still needs a known or operator-declared price.
 Bare `nika serve` does not listen on an HTTP port — the firer loop has no
 socket, so an HTTP health probe there would be a fictional contract. With
 `--bind` the same verb *does* listen: probe `GET /health` on the bound
-address instead.
+address instead, and read the load with `GET /v1/occupancy`
+([below](#size-the-workers-and-the-provider-caps)).
 
 <div className="sdk-flight sdk-flight-compact">
   <span>SERVER PROBES · EACH ANSWERS ONE QUESTION</span>
@@ -114,9 +120,11 @@ one. Decide what that door exposes before you open it:
   passes run at once (`503 artifact_capacity`). A download is not bounded by
   the request deadline; the connection limit bounds streams.
 - **Retention.** The routes add no store and delete nothing. A job stays
-  downloadable while its journal and its files stay as recorded: a file
-  changed since the run answers `409 artifact_changed`, and the server never
-  serves other bytes in its place.
+  downloadable while the store keeps it and its journal and its files stay as
+  recorded: a job `--job-retention` forgot answers `404`, a file changed since
+  the run answers `409 artifact_changed`, and the server never serves other
+  bytes in its place. A job that was started again serves the artifacts of
+  its latest attempt only.
 - **Re-serving.** The bytes come with `Content-Disposition: attachment`,
   `X-Content-Type-Options: nosniff`, `Content-Security-Policy: sandbox` and
   `Cache-Control: no-store`. Keep them when a proxy or your application serves
@@ -149,6 +157,224 @@ order it signs: the pair's public half, then `~/.nika/keys/run-signing.pub`,
 then the retired-key ledger. `GET /v1/jobs/{id}/trace/verify` then reads
 `sealed` and the artifact routes serve the job. `nika trace verify` run with
 the same two variables set attributes those journals without `--key`.
+
+## Keep the job store bounded
+
+Out of the box the resident keeps every job it admits, and once it holds
+`--max-jobs` jobs (10,000 by default) every admission answers
+`507 job_capacity`. A resident that takes steady traffic sets a retention
+window:
+
+```sh
+nika serve --bind 127.0.0.1:8787 --workflows ./workflows \
+  --token-file .nika/serve.token \
+  --job-retention 24h --job-retention-unsuccessful 7d
+```
+
+- `--job-retention` forgets a `succeeded` job once it has been settled that
+  long. `--job-retention-unsuccessful` does the same for `failed`,
+  `cancelled` and `interrupted` jobs; without it they follow the first
+  window. The minimum is one minute.
+- A job that is `queued`, `running` or `paused` is never forgotten.
+- Jobs leave when the next job is admitted, and at startup. A read never
+  evicts.
+- `GET /v1/jobs/{id}` and the artifact routes answer `404` for a forgotten
+  job. Its trace journal under `.nika/traces` is not removed: it is the
+  evidence of the run, and `nika trace` still reads it.
+- A forgotten job's `Idempotency-Key` is forgotten with it: the same key then
+  creates a new job. Keep the window longer than your callers retry.
+- Keep the unsuccessful window as long as your support window: a failed job
+  you want to find next week needs `--job-retention-unsuccessful 7d` or more.
+- Keep it longer than the longest `maxLatenessSeconds` of your schedules. A
+  slot whose interrupted job was forgotten before the slot was offered again
+  can fire a second job.
+
+Every job operation rewrites the whole store file, so each one costs more as
+the store grows. Prefer a retention window to a larger `--max-jobs`.
+[Known limits](/changelog/known-limits#nika-serve-jobs) gives the measured
+cost and what it means for a high job rate.
+
+## Size the workers and the provider caps
+
+A resident that runs jobs for many users states who each job is for
+(`owner` on `POST /v1/jobs`) and bounds what one of them holds:
+
+```sh
+nika serve --bind 127.0.0.1:8787 --workflows ./workflows \
+  --token-file .nika/serve.token \
+  --max-concurrent-jobs 16 --queue-capacity 2000 \
+  --max-queued-per-owner 50 --max-concurrent-per-owner 2 \
+  --provider-concurrency openai=16 --provider-concurrency anthropic=8 \
+  --job-retention 24h --shutdown-grace 5m
+```
+
+- Set each provider cap under that provider's own rate limit for your
+  account, then `--max-concurrent-jobs` from the caps. A provider is named
+  once, with a count of 1 to 65535.
+- The wait for a provider slot counts inside a task's `timeout:`. A cap far
+  under the demand shows as task timeouts, with nothing sent.
+- The cap counts the model calls of `infer:` and `agent:` tasks. Calls an
+  agent application makes through its own client, the image and speech
+  tools, and `POST /v1/compile` are not counted.
+- `429 owner_queue_full` carries `Retry-After: 5`, a fixed hint: the
+  resident cannot know when one of the owner's jobs will start. Send the same
+  request again, with the same `Idempotency-Key`.
+- With `--cost-review`, a job refused by a full queue or by its owner's bound
+  keeps its approved review: send the same request again while the review
+  lives.
+- With a 5-minute grace, systemd needs `TimeoutStopSec=315`.
+
+Read what the resident holds at any time:
+
+```sh
+curl -sS -H "Authorization: Bearer $(cat .nika/serve.token)" \
+  http://127.0.0.1:8787/v1/occupancy
+```
+
+```json
+{
+  "jobs": {
+    "running": 2, "queued": 47,
+    "max_concurrent": 2, "queue_capacity": 64,
+    "max_concurrent_per_owner": null, "max_queued_per_owner": null
+  },
+  "owners": [
+    {"owner": "user_123", "running": 1, "queued": 47},
+    {"owner": null, "running": 1, "queued": 0}
+  ],
+  "owners_omitted": 0,
+  "providers": [
+    {"provider": "openai", "max_concurrent": 16, "in_flight": 16, "waiting": 5}
+  ]
+}
+```
+
+At most 100 owners are named, busiest first; `owners_omitted` counts the
+rest, and `owner: null` is the lane of the jobs that state none. A provider
+whose `waiting` stays above zero is your bottleneck: raise its cap if the
+provider allows it, or lower `--max-concurrent-jobs`. The reading is this
+process's memory at one instant, not a record: read `GET /v1/jobs` for the
+jobs themselves.
+
+## Restart and upgrade
+
+A deploy restarts the resident. A job that was running past the grace is
+`interrupted`, and stays so, unless the next resident is told otherwise:
+
+```sh
+nika serve --bind 127.0.0.1:8787 --workflows ./workflows \
+  --token-file .nika/serve.token \
+  --retry-interrupted restart --retry-max-attempts 3
+```
+
+The next resident then runs such a job again from its first task, as a new
+attempt of the same job. A workflow whose effects can repeat (a program, a
+file write, a child workflow, a request other than `GET` or `HEAD`, an agent
+tool that acts) is started again only when its job stated `retry`. With
+`resume`, the new attempt is served the tasks the lost one completed from its
+journal. A deploy that upgrades the engine refuses the resume of the jobs it
+interrupted: when the stopping resident had already queued the new attempt,
+that attempt fails with `resume_refused` without running a task. Use
+`restart` across an engine upgrade.
+
+### Upgrade and keep a way back
+
+The first 0.125 resident that holds a state root moves its job store to
+format 4. Every event hash, receipt and identity digest stays as it was, and
+`/health` reports `storeFormatVersion.jobs: 4`. A 0.124 resident refuses a
+format-4 store. Stop the resident and copy the state root before you upgrade:
+
+```sh
+cp -a .nika/serve ../serve-state-before-0.125
+```
+
+To go back, stop the 0.125 resident, put that copy back in place and start
+the older binary. The jobs admitted since the copy are not in it. A schedule
+that states `owner` or `labels` is also refused whole by an older engine.
+
+## Find and retry a failed job
+
+Support lists one owner's failed or interrupted jobs of the last seven days,
+then starts one again:
+
+```sh
+AUTH="Authorization: Bearer $(cat .nika/serve.token)"
+SINCE="$(date -u -v-7d +%Y-%m-%dT%H:%M:%SZ 2>/dev/null || date -u -d '7 days ago' +%Y-%m-%dT%H:%M:%SZ)"
+curl -s -H "$AUTH" \
+  "http://127.0.0.1:8787/v1/jobs?owner=user_123&status=failed,interrupted&created_after=$SINCE" \
+  | jq -r '.jobs[] | [.id, .status, .attempts, .retry_state, (.error.code // "")] | @tsv'
+curl -sS -X POST http://127.0.0.1:8787/v1/jobs/<id>/retry \
+  -H "$AUTH" -H 'Content-Type: application/json' \
+  -d '{"attempt": 1, "mode": "restart", "max_cost_usd": 0.5}'
+```
+
+- The list holds what retention kept: a seven-day window needs
+  `--job-retention-unsuccessful 7d` or more.
+- `attempt` names the job's latest attempt (the first is 1), the summary's
+  `attempts`. Sending the same request twice starts one attempt: the second
+  answer is `200` with the job as it stands.
+- The request is your consent to run the workflow's effects again.
+- `resume` serves what the attempt's journal completed and runs the rest; a
+  journal that cannot be resumed answers `409 resume_refused` and nothing
+  runs. A job a schedule fired can be restarted, never resumed.
+- The bound of attempts and the job's one ceiling hold as for a restart
+  after a deploy. A failed run that left no journal has an unknown spend,
+  which `max_cost_usd` accepts; without it the answer is
+  `409 unknown_spend`.
+- `409 job_not_retryable` answers a job that succeeded or was cancelled, a
+  job whose latest attempt never started, and a request that does not name
+  the latest attempt. `409 retry_exhausted` and `409 budget_exhausted` say
+  the job took its bound or its ceiling. An owner at its bound gets
+  `429 owner_queue_full`, as an admission does.
+
+Then read what happened:
+
+```sh
+curl -s -H "$AUTH" http://127.0.0.1:8787/v1/jobs/<id>/attempts
+curl -s -H "$AUTH" 'http://127.0.0.1:8787/v1/jobs/<id>/trace/verify?attempt=1'
+```
+
+`GET /v1/jobs/{id}/attempts` answers the policy in force for the job, its
+`retry_state` (`none`, `queued`, `exhausted` or `refused`, with
+`retry_reason` when it was not started again) and each attempt, oldest first:
+its `execution_id` and `trace_id`, how it was started again (`mode`,
+`resumed_from`), its receipt, what the decision that closed it counted
+(`spend`) and when it started and ended. Each attempt has its own journal:
+`trace/verify?attempt=1` verifies the first attempt's, and the route without
+a query verifies the latest.
+
+## Manage schedules over HTTP
+
+A resident whose `/health` lists `scheduleManage` lets an operator see,
+remove and run the schedules without touching its files:
+
+```sh
+AUTH="Authorization: Bearer $(cat .nika/serve.token)"
+# Every schedule: the ones this door created, then the project's beats.
+curl -s http://127.0.0.1:8787/v1/schedules -H "$AUTH"
+# Run one now, once. The cadence does not move.
+curl -s -X POST http://127.0.0.1:8787/v1/schedules/nightly/trigger \
+  -H "$AUTH" -H 'Idempotency-Key: nightly-by-hand-1'
+# Remove one, whichever revision is current.
+curl -s -X DELETE http://127.0.0.1:8787/v1/schedules/nightly \
+  -H "$AUTH" -H 'If-Match: *'
+```
+
+- A trigger admits an ordinary job: it waits in the same queue, counts
+  against the same limits, and shows in `GET /v1/jobs` with
+  `"origin":{"kind":"manual"}`. It runs under what the schedule declares,
+  its `owner` and `labels` included, and takes no body (or an empty JSON
+  object). The same `Idempotency-Key` sent again answers the same job, never
+  a second run.
+- Removing a schedule does not stop a job it already fired: cancel that job
+  by its id. To remove a schedule only if nobody changed it since you read
+  it, send the `ETag` of that read in `If-Match` instead of `*`; a changed
+  schedule answers `412` and stays.
+- The project's beats are declared in `nika.yaml`: remove or change them
+  there, and run one by hand with `nika arm fire`. Over HTTP both gestures
+  answer `409 schedule_declared_by_project`.
+- `GET /v1/schedules` sets `truncated` when the resident holds more
+  schedules than one list answers.
 
 ## Deploy a project change
 
@@ -208,6 +434,9 @@ and investigate the external system before replaying.
 - Captured stdout decision lines and stderr diagnostics.
 - SIGTERM delivery with enough time for the active firing boundary to settle.
 - An incident path from decision to ledger to verified trace.
+- With `--bind`: a `--job-retention` window longer than your callers retry
+  and your support window, a kill timeout above `--shutdown-grace`, and a
+  copy of the state root before each engine upgrade.
 
 ## Continue
 

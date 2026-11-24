@@ -1,22 +1,92 @@
 ---
-title: "Known limits in 0.124"
-description: "What the 0.124 release does not do, in plain words, with a way to work with each limit."
+title: "Known limits in 0.125"
+description: "What the 0.125 release does not do, in plain words, with a way to work with each limit."
 sidebarTitle: "Known limits"
 icon: "triangle-exclamation"
 ---
 
-These are the known limits of Nika 0.124. Each one says what happens and what
+import { SDK } from "/snippets/_sdk-contract.mdx"
+
+These are the known limits of Nika 0.125. Each one says what happens and what
 you can do about it today. They describe this release, not a promise about the
 next one: the [roadmap](/changelog/roadmap) covers direction, and
 [releases](/changelog/releases) lists what each version changed.
 
 ## No video yet
 
-0.124 builds images (`nika:image_generate`, `nika:image_fx`, and contact
+0.125 builds images (`nika:image_generate`, `nika:image_fx`, and contact
 sheets with `nika:image_compose`) and narration (`nika:tts_generate`), but it
-does not assemble video. Native video assembly is planned for 0.125. Until
-then, a video tool you install yourself can run from an `exec:` task, inside
-`permits.exec` and the workflow's `fs` boundary.
+does not assemble video. Native video assembly is planned for a later
+release. Until then, a video tool you install yourself can run from an
+`exec:` task, inside `permits.exec` and the workflow's `fs` boundary.
+
+## `nika serve` jobs
+
+0.125 lets an application attribute, list, retain, share and start again the
+jobs of one resident ([Resident server](/sdk/operations/resident-server#jobs-an-application-finds-again)).
+What it does not do:
+
+- **One store file holds every job.** The resident rewrites that file on
+  every job operation, so each operation costs more as the store keeps more
+  jobs. Measured on one Apple Silicon laptop (APFS), with minimal records:
+  one job (admitted, started and settled) costs about 37 ms plus about
+  0.10 ms per job the store keeps. From those figures, a resident taking
+  5,000 jobs an hour keeps up only while it keeps fewer than about 3,800
+  jobs, which is under an hour of history at that rate. A high job rate
+  holds only with a short `--job-retention`. Seven days of such traffic does
+  not fit; keeping only the unsuccessful jobs for seven days fits when they
+  are rare.
+- **The resident starts a job again on its own only when its resident
+  died** (a kill, or a stop past `--shutdown-grace`) and
+  `--retry-interrupted` or the job's own `retry` allows it. A workflow with
+  effects outside the engine (a program, a file write, a child workflow, a
+  request other than `GET` or `HEAD`, an agent tool that acts) is started
+  again only when its job stated `retry`. The resident never starts again a
+  failed job, a job a schedule fired on its beat, or a job admitted through
+  a cost review (it cannot state `retry`, so it stays `interrupted` with
+  `effects_need_consent`). A request can: `POST /v1/jobs/{id}/retry`
+  restarts those, and resumes all but the scheduled one. Nothing starts a
+  cancelled job again.
+- **The provider cap counts the model calls of `infer:` and `agent:`
+  tasks.** `--provider-concurrency` does not count the calls an agent
+  application makes with its own client, the image and speech tools, or the
+  workflow-authoring door (`POST /v1/compile`). A deployment that relies on
+  them for volume is not bounded by it. The wait for a slot counts inside a
+  task's `timeout:`, so a cap far under the demand shows as task timeouts.
+- **`owner` is attribution, not access control.** One token is one authority
+  domain: whoever holds it reads, lists, cancels and retries every job,
+  whatever its `owner`. Keep the token in your backend and apply your own
+  authorization there.
+- **The TypeScript SDK does not expose the new routes.**
+  {SDK.package}@{SDK.sourceVersion} sends no `owner`, `labels` or `retry`, and
+  has no call for the job list, a retry, the attempts, the occupancy or the
+  schedule list, removal and trigger: call them over HTTP. The published 0.124
+  SDK keeps working against a 0.125.0 server. A job started again keeps its
+  id; its `execution_id` and `trace_id` change.
+- **No way back without a copy.** 0.125 moves the job store to format 4 the
+  first time a resident holds the state root, and a 0.124.x resident refuses
+  a format-4 store. Copy the state root (`.nika/serve` by default) before
+  upgrading to keep a way back
+  ([Server runbook](/sdk/operations/server-runbook#upgrade-and-keep-a-way-back)).
+  A schedule that states `owner` or `labels` is also refused whole by an
+  older engine.
+- **A dropped run can outlive its attempt.** A run interrupted while its
+  resident lives (its execution timeout, a stop) is told to stop and dropped,
+  and its blocking work can still be running when a request starts the next
+  attempt. The two attempts never share an identity or a journal.
+- **A retry request can wait on a full write lane.** It writes through the
+  same bounded lane as a cancellation; while that lane is full, the request
+  waits and holds one of the server's threads.
+- **The spend read from a journal can be short.** A journal that holds only
+  its first record counts as a run that sent nothing, and one whose writes
+  failed during the run (a full disk) stops early. A call in flight counts at
+  the bound `nika check` gives its task, which prices its declared output,
+  not its input.
+- **A refused resume shows its verdict only.** The warnings of the resume
+  judgment (an engine or a model seat that differs from the journal's, under
+  an exact declaration) are not shown on the job.
+- **Artifacts of the latest attempt only.** The artifact routes serve the
+  latest attempt of a job that was started again.
 
 ## Paid media under a cost cap
 
@@ -334,7 +404,7 @@ Without the script, take the file directly: each registry entry
 file under `[source]` (repository, revision, path) and its digest under
 `[integrity]`. Download that file at that revision, compare its SHA-256 with
 the entry, and check it with `nika check`. This is a compatibility defect of
-the registry reader, still present in 0.124: work from the local file.
+the registry reader, still present in 0.125: work from the local file.
 
 ## Project files are checked, not run
 
@@ -363,7 +433,7 @@ built-in server cannot serve it: pull the lite pick
 (`unsloth/Qwen3-4B-Instruct-2507-GGUF:Q4_K_M`) for the built-in server, or
 serve the Gemma file with llama.cpp's `llama-server`, LM Studio or Ollama
 ([Local models](/guides/local-models)). None of the Gear One picks is marked
-verified in 0.124.
+verified in 0.125.
 
 ## The TypeScript SDK
 

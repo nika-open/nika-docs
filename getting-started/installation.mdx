@@ -78,9 +78,9 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
     entrypoint:
 
     ```bash
-    docker run --rm ghcr.io/nika-open/nika:0.125.0 --version
-    docker run --rm -v "$PWD:/work" -w /work ghcr.io/nika-open/nika:0.125.0 check flow.nika
-    docker run -i --rm ghcr.io/nika-open/nika:0.125.0 mcp
+    docker run --rm ghcr.io/nika-open/nika:0.125.1 --version
+    docker run --rm -v "$PWD:/work" -w /work ghcr.io/nika-open/nika:0.125.1 check flow.nika
+    docker run -i --rm ghcr.io/nika-open/nika:0.125.1 mcp
     ```
 
     The images of releases up to 0.124.4 are published as
@@ -88,7 +88,7 @@ import { SDK } from "/snippets/_sdk-contract.mdx";
     it moved to `nika-open`.
 
     The image carries the base shell and coreutils, nothing more; build your
-    own image `FROM ghcr.io/nika-open/nika:0.125.0` when a workflow runs
+    own image `FROM ghcr.io/nika-open/nika:0.125.1` when a workflow runs
     heavier tools. It has no bubblewrap, so a workflow that declares
     `permits:` and runs `exec:`, or calls an MCP server, refuses to start there (`NIKA-1710`, see
     [Servers and headless Linux](#servers-and-headless-linux)) unless you
@@ -422,7 +422,7 @@ rm ~/.nika/bin/nika                          # install script without Homebrew
 npm uninstall -g @nika-open/nika             # npm
 rm ~/.cargo/bin/nika                         # cargo binstall or cargo install
 nix profile remove nika                      # Nix (see `nix profile list` for the name)
-docker image rm ghcr.io/nika-open/nika:0.125.0   # container
+docker image rm ghcr.io/nika-open/nika:0.125.1   # container
 ```
 
 Then, if you want no trace left, remove Nika's state:

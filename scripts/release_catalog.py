@@ -38,9 +38,22 @@ def utc(value):
     return value
 
 
+HEADING = r"(?ms)^[-*] \*\*(.+?)\*\*"
+
+
 def highlights(body):
-    """Use complete upstream change headings, not guessed or truncated summaries."""
-    headings = re.findall(r"(?ms)^[-*] \*\*(.+?)\*\*", body)
+    """Use complete upstream change headings, not guessed or truncated summaries.
+
+    A release that fixes a security issue leads with its first Security
+    heading, so three features never hide the fix; the rest keep the order
+    of the notes.
+    """
+    headings = re.findall(HEADING, body)
+    security = re.search(r"(?ms)^### Security[ \t]*\n(.*?)(?=^##+ |\Z)", body)
+    lead = re.findall(HEADING, security.group(1))[:1] if security else []
+    if lead:
+        headings.remove(lead[0])
+        headings = lead + headings
     if not headings:
         # Notes without bulleted headings may lead their What section with one
         # bold sentence; it is the author's own summary, never a guess.

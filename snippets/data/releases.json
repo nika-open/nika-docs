@@ -3,6 +3,19 @@
   "repository": "nika-open/nika",
   "releases": [
     {
+      "tag": "v0.125.1",
+      "name": "v0.125.1",
+      "publishedAt": "2026-11-25T01:10:08Z",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.125.1",
+      "assetCount": 8,
+      "highlights": [
+        "The plugin builds, runs and improves a job as one loop.",
+        "The plugin designs a real job, not a three-step chain",
+        "The SDK guard reads what the published @nika-open/nika 0.125.0 closes."
+      ],
+      "notesSha256": "075f2def0eb080677449068e14114f842aeb032ac9c316d34f1bee0a95a0ebac"
+    },
+    {
       "tag": "v0.125.0",
       "name": "v0.125.0",
       "publishedAt": "2026-11-24T16:24:20Z",

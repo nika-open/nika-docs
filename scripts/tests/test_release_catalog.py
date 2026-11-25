@@ -45,6 +45,26 @@ class CatalogTests(unittest.TestCase):
         self.assertEqual(catalog.highlights(both), ['Bullet heading.'])
         self.assertEqual(catalog.highlights('## What\n\nRead the changes.\n\n## Install\n\n**x**'), [])
 
+    def test_a_security_fix_leads_the_highlights(self):
+        # A release that fixes a security issue never hides it behind three
+        # features: its first Security heading leads, the rest keep their order.
+        body = ('## What\n\nText.\n\n### Added\n\n- **Feature one.** A.\n- **Feature two.** B.\n\n'
+                '### Fixed\n\n- **A fix.** C.\n\n### Security\n\n- **The floor refuses\na delete.** D.\n'
+                '- **A second security fix.** E.\n\n## Install\n\n- **Not a change.** F.')
+        self.assertEqual(catalog.highlights(body),
+                         ['The floor refuses a delete.', 'Feature one.', 'Feature two.'])
+        # Without a Security section, or with one that has no bold heading,
+        # the order of the notes stands.
+        plain = body.replace('### Security\n\n- **The floor refuses\na delete.** D.\n'
+                             '- **A second security fix.** E.\n', '')
+        self.assertEqual(catalog.highlights(plain), ['Feature one.', 'Feature two.', 'A fix.'])
+        bare = body.replace('- **The floor refuses\na delete.** D.\n- **A second security fix.** E.\n',
+                            'Nothing bold here.\n')
+        self.assertEqual(catalog.highlights(bare), ['Feature one.', 'Feature two.', 'A fix.'])
+        # A security-only release keeps its own order.
+        only = '### Security\n\n- **First.** A.\n- **Second.** B.'
+        self.assertEqual(catalog.highlights(only), ['First.', 'Second.'])
+
     def test_rendered_text_preserves_flags_and_inert_prose(self):
         for value in ['nika check --json', '<Tag>{value}</Tag> [x](javascript:x)',
                       'quotes " and backslashes \\ with `code`', 'Unicode — « »']:

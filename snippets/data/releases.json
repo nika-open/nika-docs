@@ -9,9 +9,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.125.1",
       "assetCount": 8,
       "highlights": [
+        "The exec floor refuses a recursive delete that leaves the working directory, in argv form and on a shell: line alike.",
         "The plugin builds, runs and improves a job as one loop.",
-        "The plugin designs a real job, not a three-step chain",
-        "The SDK guard reads what the published @nika-open/nika 0.125.0 closes."
+        "The plugin designs a real job, not a three-step chain"
       ],
       "notesSha256": "075f2def0eb080677449068e14114f842aeb032ac9c316d34f1bee0a95a0ebac"
     },
@@ -22,9 +22,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.125.0",
       "assetCount": 8,
       "highlights": [
+        "A paused approval answer no longer carries over to a task edited after the question.",
         "nika check names a guard that untrusted content steers.",
-        "The Claude Code plugin makes, runs and follows a workflow without leaving the conversation",
-        "nika serve shares its workers between owners and takes its limits as flags."
+        "The Claude Code plugin makes, runs and follows a workflow without leaving the conversation"
       ],
       "notesSha256": "a8e18c57ba82def6fc5d2a6c35eedc978fae3badc546b387c1c40832b0976c39"
     },
@@ -35,9 +35,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.124.5",
       "assetCount": 8,
       "highlights": [
+        "quinn-proto and quinn-udp are past three QUIC advisories.",
         "Nika moved to the nika-open organization.",
-        "nika doctor names the package an npm copy was installed as.",
-        "quinn-proto and quinn-udp are past three QUIC advisories."
+        "nika doctor names the package an npm copy was installed as."
       ],
       "notesSha256": "dfeef47a968e93c70038d936304009762bff04ec0a389540fb46a9b9c7b07d08"
     },
@@ -48,9 +48,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.124.4",
       "assetCount": 8,
       "highlights": [
+        "rustix is past its extended-attribute unsoundness advisory.",
         "nika serve --cost-policy admits runs on an unpriced route with no per-run cost review.",
-        "A silent adapter reads as unavailable whichever timer is observed first.",
-        "rustix is past its extended-attribute unsoundness advisory."
+        "A silent adapter reads as unavailable whichever timer is observed first."
       ],
       "notesSha256": "cfd627104be6dc7a934390a47fc14ef0abe6917d1abed5488f3c2e45bfc3dbaa"
     },
@@ -98,9 +98,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.124.0",
       "assetCount": 8,
       "highlights": [
+        "NIKA-SEC-014 holds a confirm gate in front of a child workflow call.",
         "nika doctor and nika welcome name which nika is running.",
-        "An agent application's images are task values.",
-        "nika:image_compose assembles several PNG images into one."
+        "An agent application's images are task values."
       ],
       "notesSha256": "b83420f6b5f480dbc407d7e10039e4f646111bf0ab2923d0fc88e8532be93305"
     },
@@ -111,9 +111,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.123.2",
       "assetCount": 8,
       "highlights": [
+        "An agent: task on a harness seat is held to the workflow's permits: as far as the seat allows, and nika check says where that stops.",
         "nika serve downloads the artifacts a settled job's sealed journal records.",
-        "crypto-bigint moves from the yanked 0.7.6 to 0.7.9.",
-        "The SDK guard reads what the published @supernovae-st/nika 0.123.1 closes."
+        "crypto-bigint moves from the yanked 0.7.6 to 0.7.9."
       ],
       "notesSha256": "352361d2f6080d578e3bb783cba2ba209dedea33880cc8509bffae5e6b11b852"
     },
@@ -124,9 +124,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.123.1",
       "assetCount": 8,
       "highlights": [
+        "Big-integer arithmetic is past its October constant-time advisory.",
         "The repository's documents describe the released 0.123.0 and its maintenance.",
-        "The AGENTS.md that nika init writes no longer says the shipped binary cannot serve models.",
-        "nika arm --emit --mode system states its limit instead of a coming release."
+        "The AGENTS.md that nika init writes no longer says the shipped binary cannot serve models."
       ],
       "notesSha256": "b23a4f472b218a694f66a4e1dbef664364d63f549df892a6a3d2241a421b3f1c"
     },
@@ -195,9 +195,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.120.1",
       "assetCount": 8,
       "highlights": [
+        "A value read of a stage that CERTAINLY skips on « no » is a NIKA-SEC-014 refusal.",
         "Compile derives private pattern facets from the AST.",
-        "Project schemas follow canonical program names.",
-        "A value read of a stage that CERTAINLY skips on « no » is a NIKA-SEC-014 refusal."
+        "Project schemas follow canonical program names."
       ],
       "notesSha256": "ae1f81b48987f5c7cdd402c4810e35c4bae47e4b3b6e1f978632212a4c0b3be6"
     },
@@ -208,9 +208,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.120.0",
       "assetCount": 8,
       "highlights": [
+        "Reject TLS 1.3 handshake messages across encryption-level boundaries.",
         "Scheduled beats carry per-beat inputs.",
-        "A resumed leg names the trace it continues.",
-        "Serve named-job inputs."
+        "A resumed leg names the trace it continues."
       ],
       "notesSha256": "13d1d52ba287a746177bbdaca06564e05f9f1034817b8de2c06b3de7b094c477"
     },
@@ -260,9 +260,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.116.2",
       "assetCount": 8,
       "highlights": [
+        "Secret-bearing workflows stay out of test and fallback diagnostics.",
         "0.116.2 supersedes the unpublished 0.116.1 tag.",
-        "Relative permit paths keep stable identity during concurrent ancestry changes.",
-        "Resident schedules settle before their durable store shuts down."
+        "Relative permit paths keep stable identity during concurrent ancestry changes."
       ],
       "notesSha256": "604182b6b755a63d87a93ffce639d1acb9727d42c715411820884b59e356cdb6"
     },
@@ -286,9 +286,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.115.0",
       "assetCount": 8,
       "highlights": [
+        "A decided human gate stays decided.",
         "nika check --json carries one-obvious-way lints.",
-        "The next tagged binary includes the harness access class.",
-        "One-shot infer: tasks can use a proved Codex subscription seat."
+        "The next tagged binary includes the harness access class."
       ],
       "notesSha256": "5d3f2a5a6f716267340d0e5cf42e2406cce44b95e796be303f8d6f26eb80eebd"
     },
@@ -389,9 +389,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.109.0",
       "assetCount": 0,
       "highlights": [
+        "nika mcp --transport http refuses a non-loopback bind without a bearer token (#890 · #822 P0/P1).",
         "An expression sees only its input (#959).",
-        "A third-party receipt wrote the operator's clipboard (#958).",
-        "The project file nika.yaml (D-2026-08-11-N5)."
+        "A third-party receipt wrote the operator's clipboard (#958)."
       ],
       "notesSha256": "c870d146177c42ff2b062a6c87dff3f47b36cf2125207f17ecc8dc6318569881"
     },
@@ -402,9 +402,9 @@
       "url": "https://github.com/nika-open/nika/releases/tag/v0.108.0",
       "assetCount": 8,
       "highlights": [
+        "A shell-string exec: with no permits: block passed nika check green.",
         "Execution access · step 3 — the ACP harness class",
-        "Execution access · step 2 — the deterministic resolver, the pin, the narration",
-        "Every catalog-miss advisory printed twice."
+        "Execution access · step 2 — the deterministic resolver, the pin, the narration"
       ],
       "notesSha256": "eb48962b6b6fd8c1a553ea3f4f2feed55000f22e4abef88d570e09c7558b9d3b"
     },

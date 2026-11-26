@@ -1,8 +1,12 @@
 <p align="center">
   <a href="https://docs.nika.sh">
     <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://nika.sh/brand/nika-logo-dark.svg">
-      <img src="https://nika.sh/brand/nika-logo-light.svg" alt="Nika" width="220">
+      <source media="(prefers-reduced-motion: reduce) and (prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/nika-open/.github/main/profile/assets/banner-nika-docs-dark.png?v=8d8da793a853">
+      <source media="(prefers-reduced-motion: reduce)" srcset="https://raw.githubusercontent.com/nika-open/.github/main/profile/assets/banner-nika-docs-light.png?v=3336055a3962">
+      <source media="(prefers-color-scheme: dark)" type="image/webp" srcset="https://raw.githubusercontent.com/nika-open/.github/main/profile/assets/banner-nika-docs-dark.webp?v=50c4b4bb21f6">
+      <source type="image/webp" srcset="https://raw.githubusercontent.com/nika-open/.github/main/profile/assets/banner-nika-docs-light.webp?v=0e9c15cfc168">
+      <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/nika-open/.github/main/profile/assets/banner-nika-docs-dark.gif?v=f2cdb723ed9f">
+      <img src="https://raw.githubusercontent.com/nika-open/.github/main/profile/assets/banner-nika-docs-light.gif?v=ff1b501aebf8" alt="Nika. The documentation. Read it there, improve it here. Learn to turn repeatable AI work into a file you can check, run and prove. This repository is the source of docs.nika.sh." width="100%">
     </picture>
   </a>
 </p>
@@ -15,7 +19,7 @@
 </p>
 
 <p align="center">
-  <a href="https://docs.nika.sh"><img src="https://img.shields.io/badge/docs-docs.nika.sh-8b8cf8.svg" alt="Read the docs at docs.nika.sh"></a>
+  <a href="https://docs.nika.sh"><img src="https://img.shields.io/badge/docs-docs.nika.sh-2650ff.svg" alt="Read the docs at docs.nika.sh"></a>
   <a href="https://github.com/nika-open/nika-docs/actions/workflows/gate.yml"><img src="https://github.com/nika-open/nika-docs/actions/workflows/gate.yml/badge.svg?branch=main" alt="Docs gate status"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-AGPL--3.0--or--later-blue.svg" alt="AGPL-3.0-or-later"></a>
 </p>
@@ -373,6 +377,13 @@ response times.
 
 <!-- city:map -->
 ## 🦋 The Nika family
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/nika-open/.github/main/profile/assets/family-dark.png?v=4cfc8ec611de">
+    <img src="https://raw.githubusercontent.com/nika-open/.github/main/profile/assets/family-light.png?v=dfedffa46450" alt="The repositories of Nika. The language and its engine: nika-spec and nika. From the tools you already use: nika-plugins, nika-vscode, nika-client and gh-nika. On every pull request, and beyond: nika-action, nika-actions-starter, nika-registry, homebrew-tap, nika-estate and nika-docs." width="100%">
+  </picture>
+</p>
 
 | | Repository | What it gives you |
 |---|---|---|

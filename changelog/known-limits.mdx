@@ -242,6 +242,33 @@ and that answer is not tracked as secret. The SECRETS rung says so
 secret reaches a model only through an `egress:` rule you declare on it
 (`egress: [{ to: "infer" }]`).
 
+## The SECRETS row offers one rule as the whole `egress:` list
+
+When `nika check` accepts a secret sent to a host through a tool, its SECRETS
+row can print an exact form for `egress:`. It does so in two cases:
+
+- No rule for the tool pins a host:
+  `egress.to <tool> pins no host (any host the tool reaches) · exact form: egress: [{ to: "<tool>", host: "<host>" }]`
+- A rule pins another host, and a rule beside it pins none:
+  `egress.to <tool> pins <a>, not <b>, and a rule with no host clears any host the tool reaches · exact form: egress: [{ to: "<tool>", host: "<b>" }]`
+
+The form is a single rule, offered as the whole `egress:` list. Replacing your
+list with it is safe only when that one rule covers every send of the secret.
+In the second case it drops the rule for `<a>`. When the secret is sent from
+more than one task, or through more than one tool, a send that the new list no
+longer covers is refused with `NIKA-SEC-006` at the next check. The check fails
+closed: it lets nothing through.
+
+What you can do:
+
+- Keep your other `egress:` rules. Adding the printed rule beside them never
+  breaks the file, but it narrows nothing by itself: a rule with no host still
+  lets the secret reach any host the tool reaches.
+- To pin the secret, replace the rule with no host by one `host:` rule for each
+  destination the secret goes to through that tool, in every task that sends
+  it. Keep the rules that already pin a host, then run `nika check` again. A
+  send left without a rule is refused with `NIKA-SEC-006`, which names it.
+
 ## What the security checks do not follow
 
 - **What a seat does without asking.** On a harness seat, `permits:` does not

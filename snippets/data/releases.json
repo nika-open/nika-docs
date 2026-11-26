@@ -3,6 +3,19 @@
   "repository": "nika-open/nika",
   "releases": [
     {
+      "tag": "v0.125.2",
+      "name": "v0.125.2",
+      "publishedAt": "2026-11-26T15:26:14Z",
+      "url": "https://github.com/nika-open/nika/releases/tag/v0.125.2",
+      "assetCount": 8,
+      "highlights": [
+        "The Cursor hooks files declare their version.",
+        "nika catalog --mcp lists the embedded MCP server shelf.",
+        "nika check knows the models released since the last catalog."
+      ],
+      "notesSha256": "b45c3b4e27977084e8fefcf9de3db0a36ba75b63509a1adaa9c6befa29211deb"
+    },
+    {
       "tag": "v0.125.1",
       "name": "v0.125.1",
       "publishedAt": "2026-11-25T01:10:08Z",

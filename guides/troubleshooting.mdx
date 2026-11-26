@@ -12,18 +12,18 @@ import { CANON } from "/snippets/_canon.mdx";
 <AccordionGroup>
   <Accordion title="Can I run Nika today?" icon="play">
     Yes. Install the latest tagged release with Homebrew or `install.sh`,
-    then run `nika check` and `nika run` locally. 0.124 is the current
+    then run `nika check` and `nika run` locally. 0.125 is the current
     release line. Work stays focused on maintenance, security and the media
-    capabilities workflows need; native video is planned for 0.125. A
+    capabilities workflows need; native video is planned for a later release. A
     grammar change ships with its `nika check --fix` migration.
   </Accordion>
   <Accordion title="How are the language and the engine versioned?" icon="code-branch">
     Two independent axes. The **language** is versioned by the spec and
     changes only with a migration the binary applies (`nika check --fix`)
-    and a refusal that names the move. The **engine** follows semver. 0.124
+    and a refusal that names the move. The **engine** follows semver. 0.125
     is the current release line. Work stays focused on maintenance, security
     and the media capabilities workflows need; native video is planned for
-    0.125. The [roadmap](/changelog/roadmap) keeps the earlier long-range
+    a later release. The [roadmap](/changelog/roadmap) keeps the earlier long-range
     plans as history.
     Same model as SQL or GraphQL: the contract is stable, implementations
     iterate.
@@ -94,7 +94,7 @@ flag ([error model](/reference/error-codes)). The frequent ones:
 | « no boundary declared » on a workflow that touches something | `NIKA-AUTH-006` | An absent `permits:` block declares ZERO authority, not a free pass. Run `nika check --infer-permits` — it prints the tightest block the body needs, ready to paste. |
 | provider call fails once then works | `NIKA-PROVIDER` (`transient: true`) | The engine retries with backoff per your `retry:`. Declare it instead of wrapping logic. |
 | fetch refuses a URL | `NIKA-SEC` | SSRF defense: private networks and cloud metadata are blocked by default ([security model](/concepts/security)). |
-| command blocked in exec | `NIKA-SEC-001` | Either the always-on exec floor (a destructive or privilege pattern, whatever `permits:` says), or the OS sandbox denied the confined program something: check `permits.fs` for the files it opens. Pass data as argv elements (`exec: { command: [prog, "${{ with.x }}"] }`) or through `stdin:`, never a `shell:` string. Under `nika test` every command is refused by design: the test plane simulates the model, not effects. |
+| command blocked in exec | `NIKA-SEC-001` | Either the always-on exec floor (a destructive or privilege pattern, whatever `permits:` says), or the OS sandbox denied the confined program something: check `permits.fs` for the files it opens. Since 0.125.1 the floor also refuses a recursive delete (`rm -r`, `find … -delete`) of an absolute path or of one that climbs above the working directory with `..`: `nika check` reports it in a `command:` argv, and a run refuses it on a `shell:` line before spawn. Name the path relative to the working directory (`cwd:` sets it), or use `nika:remove_file` under a `permits.fs.write` bound. Pass data as argv elements (`exec: { command: [prog, "${{ with.x }}"] }`) or through `stdin:`, never a `shell:` string. Under `nika test` every command is refused by design: the test plane simulates the model, not effects. |
 | agent never finishes | `NIKA-AGENT` | Budgets are mandatory leashes: `max_turns` + `max_tokens_total`, and the loop ends with `nika:done`. |
 
 ## When it breaks, in order

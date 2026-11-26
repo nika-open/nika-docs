@@ -42,7 +42,7 @@ import { CANON } from "/snippets/_canon.mdx";
 | `nika sign <file>` | Sign a workflow file: mints `<file>.minisig`; `--check` verifies it. `nika run --require-signature` refuses an unsigned file |
 | `nika trace <command>` | Read a run's record (below) |
 | `nika arm` | Read the project's `arm:` registry and print each beat's readiness and next slots, scheduling nothing. `fire` fires one due beat, `migrate` upgrades old sidecars into the chained ledger, `disarm` teaches the disarm gesture; `--emit launchd\|systemd` writes the OS units; `--json` for programs ([`nika arm` reference](/reference/arm)) |
-| `nika serve` | The resident firer of the `arm:` registry. `--once` fires what is due once and exits; `--dry` runs nothing and prints each beat due now, and stays resident unless combined with `--once`. In a project that arms nothing, both say so, with the `--bind` command and the token recipe, and exit 0. With `--bind`, `--workflows` and `--token-file` it also serves authenticated HTTP: jobs, SSE, cancellation, trace verification, a settled job's artifacts, workflows, schedules, compile and OpenAPI. `--state-root`, `--run-cost-ceiling` (1 USD per job by default), `--allow-remote`, `--authoring-model`, `--sessions` (the Session under `/v1/sessions`), `--cost-review` ([Server surfaces](/sdk/operations/server-surfaces)) |
+| `nika serve` | The resident firer of the `arm:` registry. `--once` fires what is due once and exits; `--dry` runs nothing and prints each beat due now, and stays resident unless combined with `--once`. In a project that arms nothing, both say so, with the `--bind` command and the token recipe, and exit 0. With `--bind`, `--workflows` and `--token-file` it also serves authenticated HTTP: jobs (with a filtered list, a retry by request and their attempts), SSE, cancellation, trace verification, a settled job's artifacts, occupancy, workflows, schedules (list, remove and trigger included), compile and OpenAPI. `--state-root`, `--run-cost-ceiling` (1 USD per job by default), `--allow-remote`, `--authoring-model`, `--sessions` (the Session under `/v1/sessions`), `--cost-review`, and the job flags below ([Server surfaces](/sdk/operations/server-surfaces)) |
 | `nika completions <shell>` | Generate shell completions for bash, zsh, fish, elvish or powershell ([setup](/getting-started/installation#shell-completions)) |
 | `nika guard` | The judge behind the agent hooks `nika init` installs: reads a hook payload or a command line, audits every `nika run` it finds, and answers allow or deny without executing anything. Agents never type it |
 
@@ -53,6 +53,26 @@ import { CANON } from "/snippets/_canon.mdx";
 | `--run-cost-ceiling <USD\|none>` | Server default per-job ceiling, 1 USD unless explicitly disarmed with `none`. A standing rule does not override it. |
 | `--cost-review` | Enable the one-time review endpoints; advertised as `costReviewV1` and `costReviewV2`. Separate from a standing rule. |
 | `--cost-policy <RULE>` | Repeatable startup authorization for a named unpriced HTTPS OpenAI-compatible text route: `PROVIDER/MODEL:requests=N,output-tokens=N,timeout=SECONDS,runs=N/PERIOD`. Optional `request-bytes=N` and paired `input-usd=USD,output-usd=USD`. Covered runs need no per-run review; `/health` lists `costStandingPolicyV1`. Without declared prices, every binding USD ceiling must be absent; with them, the declared worst case must fit. See [Standing cost rules](/sdk/operations/standing-cost-policy) for bounds, schedules and recovery. |
+
+## `nika serve` job flags
+
+Flags of the persistent resident: each is refused beside `--once` or `--dry`. A duration is a whole number and one unit, `s`, `m`, `h` or `d`.
+
+| Flag | What it does |
+| --- | --- |
+| `--job-retention <DURATION>` | Forget a `succeeded` job once it has been settled that long (at least one minute). Absent, every job is kept. A forgotten job's `Idempotency-Key` is forgotten with it; its trace journal stays. Works without `--bind`: scheduled runs fill the same store |
+| `--job-retention-unsuccessful <DURATION>` | The same for `failed`, `cancelled` and `interrupted` jobs, which otherwise follow `--job-retention` |
+| `--max-jobs <N>` | Jobs the store keeps, 10000 by default. Past it every admission answers `507 job_capacity` |
+| `--max-concurrent-jobs <N>` | Jobs running at once, 4 by default, at most 256 |
+| `--queue-capacity <N>` | Jobs waiting, all owners together, 64 by default. Past it `503 queue_full` |
+| `--max-queued-per-owner <N>` | Jobs one owner may have waiting. Past it `429 owner_queue_full` with `Retry-After`. Jobs that state no owner count as one owner |
+| `--max-concurrent-per-owner <N>` | Jobs one owner runs at once. Its other jobs wait while free workers serve other owners |
+| `--provider-concurrency <PROVIDER=N>` | Model calls of `infer:` and `agent:` tasks in flight on one provider, all jobs together. Repeat per provider. A call past the cap waits inside its task's `timeout:` |
+| `--shutdown-grace <DURATION>` | How long a stop waits for running and queued jobs, `30s` by default, at least one second. Past it running jobs settle `interrupted` |
+| `--retry-interrupted <off\|restart\|resume>` | What becomes of a job whose run lost its resident (a kill, or a stop past its grace). `off` (default) leaves it `interrupted`; `restart` runs it again from its first task; `resume` serves the tasks its journal completed and runs the rest. A workflow with effects outside the engine is started again only if its job stated `retry` |
+| `--retry-max-attempts <N>` | Attempts one job may take, the first included, 3 by default, at most 16. A job may state a lower bound, never a higher one |
+
+[Resident server](/sdk/operations/resident-server#jobs-an-application-finds-again) explains each behavior and [Server runbook](/sdk/operations/server-runbook#keep-the-job-store-bounded) how to size them.
 
 ## `nika trace` commands
 

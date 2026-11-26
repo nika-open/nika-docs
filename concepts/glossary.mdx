@@ -80,7 +80,8 @@ the declared `permits:` before the run starts rather than discovered after.
 together: access to private data, an untrusted input, and a way out to the
 network. When a workflow has all three *and* the untrusted content can
 actually reach the way out, `nika check` refuses it (`NIKA-SEC-009`) unless a
-human gate stands in the path. → [Security](/concepts/security)
+human gate stands in the path: a `confirm` gate, or a `choice` or `input` gate
+whose answer the guarded task tests in its `when:`. → [Security](/concepts/security)
 
 **`mock/echo`** — the test model. It needs no provider, no API key and no
 network, and it costs nothing, so a workflow can be rehearsed end to end

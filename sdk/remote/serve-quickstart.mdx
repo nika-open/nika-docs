@@ -115,8 +115,11 @@ starts one on your machine and drives it with the client from the
   </Step>
   <Step title="Stop it">
     `Ctrl+C` (or `SIGTERM`) stops new admissions, then lets running and queued
-    jobs finish for up to 30 seconds. A restart with the same `--state-root`
-    resumes queued jobs; a job interrupted by the shutdown is not retried.
+    jobs finish for up to 30 seconds (`--shutdown-grace` sets another grace).
+    A restart with the same `--state-root` resumes queued jobs; a job
+    interrupted by the shutdown stays `interrupted` unless the server runs
+    with `--retry-interrupted`
+    ([Resident server](/sdk/operations/resident-server#when-a-job-loses-its-resident)).
   </Step>
 </Steps>
 

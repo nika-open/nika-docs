@@ -17,10 +17,12 @@ beat at the same firing law as `nika arm fire`. That default process is not
 HTTP.
 
 `--bind` + `--workflows` + `--token-file` on the **same verb** opens
-authenticated HTTP. The released OpenAPI includes jobs, job SSE, cancellation,
-trace verification, the download of a settled job's artifacts, workflow
-discovery and schedule read/write. It has no job-list or `POST /v1/run` route.
-`--once` and `--dry` cannot bind a listener.
+authenticated HTTP. The released OpenAPI includes jobs (admission, a filtered
+job list, SSE, cancellation, a retry by request and the attempts of a job),
+trace verification, the download of a settled job's artifacts, the occupancy
+of the workers, workflow discovery, and schedules (read, write, list, remove
+and run by hand). It has no `POST /v1/run` route. `--once` and `--dry` cannot
+bind a listener.
 
 <Warning>
   Bare `nika serve` is the ARM firer, not HTTP. The HTTP door is opt-in
@@ -89,6 +91,12 @@ claim appended ── workflow starts ── receipt appended
 Exactly-once is never promised. Make the workflow's external effects
 idempotent when replay would otherwise duplicate harm.
 
+With `--bind`, a stop closes admissions and new scheduling, then waits for
+running and queued jobs for `--shutdown-grace` (30 seconds by default). A
+drained stop exits 0. When the grace ends first, the running jobs settle
+`interrupted`, the queued ones stay queued for the next start, and the process
+exits 1. Give your supervisor a longer kill timeout than the grace.
+
 ## Opt-in HTTP
 
 ```sh
@@ -131,6 +139,159 @@ says which resident runs (the stores' writer stamp beside the server lease);
 The route table lives at `GET /v1/openapi.json`. Full matrix:
 [server surfaces](/sdk/operations/server-surfaces).
 
+## Jobs an application finds again
+
+A backend that runs jobs for many users of one application states who each
+job is for. The by-name form of `POST /v1/jobs` takes an optional `owner`
+(1 to 128 bytes of letters, digits and `._:@-`) and optional `labels` (at most
+16 pairs: a key of 1 to 64 bytes of letters, digits and `._/-`, a value of at
+most 256 bytes). Outside those bounds the request is refused before a job
+exists (`422 invalid_job_owner`, `422 invalid_job_labels`). Both bind the
+request identity, so the same `Idempotency-Key` under another owner is
+`409 idempotency_conflict`. A snapshot body carries neither. `/health` lists
+`jobAttribution`.
+
+```sh
+TOKEN="$(cat .nika/serve.token)"
+curl -s -X POST http://127.0.0.1:18765/v1/jobs \
+  -H "Authorization: Bearer $TOKEN" \
+  -H 'Idempotency-Key: hello-user_123-1' \
+  -H 'Content-Type: application/json' \
+  -d '{"workflow":"workflows/hello.nika","owner":"user_123","labels":{"plan":"pro"}}'
+curl -s -H "Authorization: Bearer $TOKEN" \
+  'http://127.0.0.1:18765/v1/jobs?owner=user_123&status=failed,interrupted&limit=20'
+```
+
+`GET /v1/jobs` (`jobList`) answers one page, newest admission first. Every
+filter is optional and they combine: `owner`, `status` (repeat it or separate
+values with commas), `workflow`, `origin` (`manual` or `schedule`),
+`label=key:value` (repeatable, every pair must match), and `created_after` and
+`created_before` (RFC 3339, strict; write a `+` offset as `%2B`). `limit` is
+1 to 200, 50 by default. While older matches exist, the page carries
+`next_cursor`: send it back unchanged as `cursor`, with the same filters. A
+job admitted while you page never repeats or hides another.
+
+A summary carries `id`, `status`, `workflow`, `origin`, `owner`, `labels`,
+`created_at`, `execution_id`, `trace_id`, `attempts`, `retry_state` and, on a
+failed job, its redacted `error`. It never carries inputs, outputs, a receipt
+or a settlement: read those on `GET /v1/jobs/{id}`, which shows no owner or
+labels. An unknown query member or a value outside its bounds is
+`400 invalid_job_query`, never ignored; a cursor the list did not write is
+`400 invalid_job_cursor`.
+
+<Warning>
+  `owner` is attribution, not access control. Whoever holds the token reads,
+  lists, cancels and retries every job. Keep the token in your backend and
+  apply your own authorization there.
+</Warning>
+
+## Keep the job store bounded
+
+The resident keeps every job it admits in one file under the state root. Out
+of the box nothing leaves it: once it holds `--max-jobs` jobs (10,000 by
+default), every admission answers `507 job_capacity`. `--job-retention`
+forgets a `succeeded` job once it has been settled that long;
+`--job-retention-unsuccessful` sets the window of `failed`, `cancelled` and
+`interrupted` jobs, which otherwise follow the first. A job that is `queued`,
+`running` or `paused` is never forgotten. A forgotten job's `Idempotency-Key`
+is forgotten with it, and its trace journal under `.nika/traces` stays. Both
+flags work without `--bind`: scheduled runs fill the same store.
+[Server runbook](/sdk/operations/server-runbook#keep-the-job-store-bounded)
+shows how to size them.
+
+## Share the workers between owners
+
+Waiting jobs are served fairly. A free worker goes to the owner with the
+fewest jobs running, in turn among equals, and jobs wait first in, first out
+inside one owner. Jobs that state no owner share one lane. A user who submits
+fifty jobs does not delay the user who submits one. `/health` lists
+`occupancy`.
+
+- `--max-concurrent-jobs` (4 by default, at most 256) and `--queue-capacity`
+  (64; past it `503 queue_full`) bound every owner together.
+- `--max-queued-per-owner` refuses an owner's next job with
+  `429 owner_queue_full` and a `Retry-After` header. Nothing is written: send
+  the same request again, with the same `Idempotency-Key`.
+- `--max-concurrent-per-owner` refuses nothing: the owner's other jobs wait
+  while free workers serve other owners.
+- A scheduled run is never refused or held back by a per-owner limit.
+- After a restart, the jobs that were waiting hold their places again. A
+  resident that restarts with a full queue answers `503 queue_full` to new
+  jobs until the backlog drains.
+
+`--provider-concurrency PROVIDER=N` keeps at most `N` model calls in flight on
+that provider, all jobs and their child workflows together. Repeat it per
+provider (`openai=16`, `anthropic=8`). A call past the cap waits its turn, and
+the wait counts inside its task's `timeout:`. Retries are unchanged: a backoff
+holds no slot. Only the model calls of `infer:` and `agent:` tasks are
+counted. `GET /v1/occupancy` reads the jobs running and waiting, the limits,
+the busiest owners (at most 100) and, for each capped provider, the calls in
+flight and waiting.
+
+## When a job loses its resident
+
+A job that was running when its resident was killed, or stopped past its
+`--shutdown-grace`, ends `interrupted`. By default it stays so
+(`--retry-interrupted off`). `restart` runs it again from its first task;
+`resume` serves the tasks the lost attempt's journal completed and runs the
+rest. Either way the new attempt is the same job: same id, same
+`Idempotency-Key`, a new `execution_id` and `trace_id`. The interrupted
+attempt is kept as it was, with its receipt. `--retry-max-attempts` (3 by
+default, at most 16) bounds the attempts, the first included. `/health` lists
+`jobRetry`.
+
+- **What counts.** Only a run that lost its resident. A cancelled job, a job
+  that failed or timed out, and a job a schedule fired on its beat are never
+  started again on their own.
+- **Effects need consent.** A workflow that only reads and computes (model
+  calls, file reads, `GET` fetches) is started again on the flag alone. One
+  that runs a program, writes a file, calls a child workflow, sends anything
+  but a `GET` or `HEAD`, or gives an agent a tool that acts, is started again
+  only if its job stated `retry` on `POST /v1/jobs`. `"retry": {}` is the
+  caller's consent to run those effects twice.
+- **Per job.** `"retry": {"on_interrupted": "resume", "max_attempts": 2}`
+  replaces the resident's mode for that job; `"off"` refuses another attempt.
+  `max_attempts` lowers `--retry-max-attempts`, never raises it. A job
+  admitted through a cost review cannot state `retry`
+  (`422 invalid_job_retry`).
+- **Cost.** One ceiling covers every attempt of a job:
+  `--run-cost-ceiling`, or the lower one the job bound. What a lost attempt
+  spent is read from its journal. When that spend cannot be known (a model
+  with no price, a task with no `max_tokens`, a call in flight through an
+  agent application, a run that left no journal), the job is not started
+  again, under a ceiling or not, unless it stated a budget for the
+  re-attempts, such as `"retry": {"max_cost_usd": 0.5}`. They then run under
+  that amount, which never raises the ceiling over every attempt.
+- **Resume.** The journal must hold its chain and match the project, the
+  workflow, the engine version, the model and the access it recorded, as for
+  `nika run --resume`. The resident never falls back to `restart` on its own.
+- **Why not.** A job left `interrupted` says why on its last event:
+  `retry_exhausted`, `effects_need_consent`, `unknown_spend`,
+  `budget_exhausted` or `resume_refused`.
+- **Clients.** A job that is started again shows `queued`, then `running`
+  again, and its event stream gains one `execution.requeued` frame. It never
+  shows `interrupted` in between: a client that waits for a terminal status
+  keeps waiting for the real end.
+
+`POST /v1/jobs/{id}/retry` starts a job that ended `interrupted` or `failed`
+again by request, whatever the flag says, and `GET /v1/jobs/{id}/attempts`
+lists its attempts.
+[Server runbook](/sdk/operations/server-runbook#find-and-retry-a-failed-job)
+has the support recipe.
+
+## Schedules over HTTP
+
+`GET /v1/schedules` lists the schedules the HTTP door created, then the
+project's beats, each with its next slot. `DELETE /v1/schedules/{id}` removes
+one under `If-Match`, and `POST /v1/schedules/{id}/trigger` runs one now, once,
+as an ordinary job: the cadence does not move. A schedule may state `owner`
+and `labels`, and every job it fires or a trigger admits carries them, so
+`GET /v1/jobs?owner=…` finds scheduled work too. The project's beats stay
+declared in `nika.yaml`: removing or triggering one over HTTP answers
+`409 schedule_declared_by_project`. `/health` lists `scheduleManage`.
+[Server runbook](/sdk/operations/server-runbook#manage-schedules-over-http)
+shows each request.
+
 ## Deployment checklist
 
 - Set a stable project `cwd` containing `nika.yaml`.
@@ -139,6 +300,8 @@ The route table lives at `GET /v1/openapi.json`. Full matrix:
 - Persist `.nika/traces/` and `.nika/arm/` according to policy.
 - Capture stdout decision lines.
 - Send SIGTERM and allow the active firing boundary to settle.
+- With `--bind`: choose a `--job-retention` window, and give the supervisor a
+  kill timeout longer than `--shutdown-grace`.
 
 ## Continue
 

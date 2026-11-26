@@ -299,7 +299,10 @@ maintained by hand, and they are not evidence about the released binary.
 - **The butterfly** 🦋 appears once, in the closing line of
   `introduction.mdx`; never in navigation, chrome or headings.
 - **Brand assets** (`images/logo-{light,dark}.svg`, `images/favicon.svg`)
-  come from the Nika brand kit at [nika.sh/brand](https://nika.sh/brand).
+  come from the Nika brand kit, whose files the site serves under
+  `nika.sh/brand/`: the mark for a
+  [dark](https://nika.sh/brand/nika-mark-dark.svg) and for a
+  [light](https://nika.sh/brand/nika-mark-light.svg) ground.
   Sync them from the kit; never retune their colors here.
 
 </details>

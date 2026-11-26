@@ -36,11 +36,11 @@ files:
   evidence: "hand-written grouped-bumps policy (comments narrate the nika-spec PR #135 desync lesson)"
 - path: ".github/workflows/gate.yml"
   class: authored
-  sha256: 3045ee703f7b6276dcd7e5a22cd762513a5abf0105be1f2f1fc7408e73dc6a27
+  sha256: 5eccf77b9590d140c449f7dd57185b141cb84a5f07ad4b69756bb79ae0137145
   evidence: "hand-written CI trust model (comments narrate the judge choices — released-binary oracle · wire-asserted counts)"
 - path: ".github/workflows/release-heal.yml"
   class: authored
-  sha256: 32d41b759d5aec9dcb7f412be9e0e5bb10737170ea03e9e7d67a4353b5e0894a
+  sha256: 6d881fae84fbf1cf8b57bf856de9f3ed161f658b37f0aa2ab5c51b8862e7c6a0
   evidence: "hand-written release-heal workflow: verified installation, atomic projection and validated PR proposal; all docs gates run on the exact proposal commit before a protected merge"
   note: "hourly or manual generated proposal; explicit workflow_dispatch qualifies the exact commit before a REST merge under main protection; no force-push or admin bypass"
 - path: ".nvmrc"
@@ -325,7 +325,7 @@ patterns:
 - glob: "**"
   class: authored
   match_count: 47
-  aggregate_sha256: 3c4dcf45a0d4422553e234cae44c08202e4faa0a1c0f5103a53e671eaa2b55b1
+  aggregate_sha256: 58731dce85f1f8066a256f85369c0065cd0fdd9107e10057ca98bf0b44a2acb3
   evidence: "no generation marker or known role found"
   note: "unverified-default"
 unverified:
